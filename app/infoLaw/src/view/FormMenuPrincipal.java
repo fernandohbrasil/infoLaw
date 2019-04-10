@@ -1,0 +1,81 @@
+
+package view;
+
+public class FormMenuPrincipal extends javax.swing.JFrame {
+
+    public FormMenuPrincipal() {
+        initComponents();
+    }
+    @SuppressWarnings("unchecked")
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    private void initComponents() {
+
+        mbMenuPrincipal = new javax.swing.JMenuBar();
+        mCadastros = new javax.swing.JMenu();
+        miCadEntidade = new javax.swing.JMenuItem();
+        miCadMunicipio = new javax.swing.JMenuItem();
+        mConsultas = new javax.swing.JMenu();
+        miCadLancamento = new javax.swing.JMenuItem();
+        miBaixaLancamento = new javax.swing.JMenuItem();
+        miCancelaContas = new javax.swing.JMenuItem();
+        miDivideContas = new javax.swing.JMenuItem();
+
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setExtendedState(6);
+        setMinimumSize(new java.awt.Dimension(800, 600));
+
+        mCadastros.setText("Cadastros");
+
+        miCadEntidade.setText("Entidade");
+        mCadastros.add(miCadEntidade);
+
+        miCadMunicipio.setText("Município");
+        mCadastros.add(miCadMunicipio);
+
+        mbMenuPrincipal.add(mCadastros);
+
+        mConsultas.setText("Financeiro");
+
+        miCadLancamento.setText("Cad. Lançamentos");
+        mConsultas.add(miCadLancamento);
+
+        miBaixaLancamento.setText("Baixa de Lançamentos");
+        mConsultas.add(miBaixaLancamento);
+
+        miCancelaContas.setText("Cancela Contas");
+        mConsultas.add(miCancelaContas);
+
+        miDivideContas.setText("Divide Valores");
+        mConsultas.add(miDivideContas);
+
+        mbMenuPrincipal.add(mConsultas);
+
+        setJMenuBar(mbMenuPrincipal);
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 400, Short.MAX_VALUE)
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 279, Short.MAX_VALUE)
+        );
+
+        pack();
+        setLocationRelativeTo(null);
+    }// </editor-fold>//GEN-END:initComponents
+   
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JMenu mCadastros;
+    private javax.swing.JMenu mConsultas;
+    private javax.swing.JMenuBar mbMenuPrincipal;
+    public javax.swing.JMenuItem miBaixaLancamento;
+    public javax.swing.JMenuItem miCadEntidade;
+    public javax.swing.JMenuItem miCadLancamento;
+    public javax.swing.JMenuItem miCadMunicipio;
+    public javax.swing.JMenuItem miCancelaContas;
+    public javax.swing.JMenuItem miDivideContas;
+    // End of variables declaration//GEN-END:variables
+}

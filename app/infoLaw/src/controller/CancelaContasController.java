@@ -1,6 +1,6 @@
 package controller;
 
-import util.Util;
+import util.DateUtil;
 import dao.ContaDao;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -25,7 +25,7 @@ public class CancelaContasController {
     private ContaModel contaModel;
     private ParcelaContaModel subContaModel;
 
-    private Util oUtil;
+    private DateUtil oUtil;
 
     public CancelaContasController() {
         frmCancelaConta = new FormCancelaConta(frmCancelaConta, true);
@@ -34,7 +34,7 @@ public class CancelaContasController {
         subContaModel = new ParcelaContaModel();
 
         dao = new ContaDao();
-        oUtil = new Util();
+        oUtil = new DateUtil();
 
         inicializarComponente();
     }

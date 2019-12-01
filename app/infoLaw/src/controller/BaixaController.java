@@ -1,6 +1,6 @@
 package controller;
 
-import util.Util;
+import util.DateUtil;
 import dao.ContaDao;
 import dao.EntidadeDao;
 import java.awt.event.ActionEvent;
@@ -41,7 +41,7 @@ public class BaixaController {
     private FormConsultaEntidade frmConsEntidade;
     private SubContaModel contaModel;
 
-    private Util oUtil;
+    private DateUtil oUtil;
 
     public BaixaController() {
         frmBaixaConta = new FormBaixaConta(frmBaixaConta, true);
@@ -54,7 +54,7 @@ public class BaixaController {
         entidadeModel = new EntidadeModel();
         entDao = new EntidadeDao();
 
-        oUtil = new Util();
+        oUtil = new DateUtil();
 
         inicializarComponente();
     }
@@ -167,8 +167,8 @@ public class BaixaController {
         frmBaixaConta.cbxEntidade.removeAllItems();
         entidades = (ArrayList<Entidade>) entDao.buscarTodos();
 
-        for (Entidade oEntidade : entidades) {
-            frmBaixaConta.cbxEntidade.addItem(oEntidade.getNome());
+        for (Entidade entidades : entidades) {
+            frmBaixaConta.cbxEntidade.addItem(entidades.getNome());
         }
     }
 
@@ -220,14 +220,14 @@ public class BaixaController {
 
         // Usar o DAO para buscar os objetos e adicionar no Table Model
         List<Entidade> todos = entDao.buscarTodos();
-        for (Entidade oEntidade : todos) {
-            entidadeModel.addEntidade(oEntidade);
-        }
+        todos.forEach((entidade) -> {
+            entidadeModel.addEntidade(entidade);
+        });
     }
 
     private void buscarObs() {
         if (frmBaixaConta.tbLancamentos.getSelectedRow() >= 0) {
-            frmBaixaConta.txObs.setText(dao.getObsConta(contaModel.getSubConta(frmBaixaConta.tbLancamentos.getSelectedRow()).getoConta().getId()));
+            frmBaixaConta.txObs.setText(dao.getObsConta(contaModel.getSubConta(frmBaixaConta.tbLancamentos.getSelectedRow()).getConta().getId()));
         }
 
     }
@@ -285,15 +285,17 @@ public class BaixaController {
 
         double total = 0.00;
         contaModel.limpar();
-        for (SubConta oSubConta : todos) {
-            total = total + oSubConta.getValorParcela();
-            contaModel.addSubConta(oSubConta);
+        if (todos != null) {
+            for (SubConta subconta : todos) {
+                total = total + subconta.getValorParcela();
+                contaModel.addSubConta(subconta);
+            }
+
+            frmBaixaConta.lblResultado.setText("Total Demonstrado: " + total);
+            frmBaixaConta.lblQtdParc.setText("Quantidade de Parcelas: " + todos.size());
         }
+
         contaModel.fireTableDataChanged();
-
-        frmBaixaConta.lblResultado.setText("Total Demonstrado: " + total);
-        frmBaixaConta.lblQtdParc.setText("Quantidade de Parcelas: " + todos.size());
-
     }
 
     private boolean validaCliente() {

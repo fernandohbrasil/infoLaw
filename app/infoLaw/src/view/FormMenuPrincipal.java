@@ -19,6 +19,8 @@ public class FormMenuPrincipal extends javax.swing.JFrame {
         miBaixaLancamento = new javax.swing.JMenuItem();
         miCancelaContas = new javax.swing.JMenuItem();
         miDivideContas = new javax.swing.JMenuItem();
+        mRelatorios = new javax.swing.JMenu();
+        miRelFinancas = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setExtendedState(6);
@@ -50,6 +52,13 @@ public class FormMenuPrincipal extends javax.swing.JFrame {
 
         mbMenuPrincipal.add(mConsultas);
 
+        mRelatorios.setText("Relatorios");
+
+        miRelFinancas.setText("Entradas e Saídas");
+        mRelatorios.add(miRelFinancas);
+
+        mbMenuPrincipal.add(mRelatorios);
+
         setJMenuBar(mbMenuPrincipal);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -70,6 +79,7 @@ public class FormMenuPrincipal extends javax.swing.JFrame {
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenu mCadastros;
     private javax.swing.JMenu mConsultas;
+    public javax.swing.JMenu mRelatorios;
     private javax.swing.JMenuBar mbMenuPrincipal;
     public javax.swing.JMenuItem miBaixaLancamento;
     public javax.swing.JMenuItem miCadEntidade;
@@ -77,5 +87,6 @@ public class FormMenuPrincipal extends javax.swing.JFrame {
     public javax.swing.JMenuItem miCadMunicipio;
     public javax.swing.JMenuItem miCancelaContas;
     public javax.swing.JMenuItem miDivideContas;
+    public javax.swing.JMenuItem miRelFinancas;
     // End of variables declaration//GEN-END:variables
 }

@@ -4,7 +4,7 @@ import java.util.Date;
 
 public class SubConta {
 
-    private Conta oConta;
+    private Conta conta;
     private int sequencia;
     private Date dataVencimento;
     private Date dataPagamento;
@@ -16,8 +16,8 @@ public class SubConta {
     public SubConta() {
     }
 
-    public SubConta(Conta oConta, int sequencia, Date dataVencimento, Date dataPagamento, double valorParcela, double valorPago) {
-        this.oConta = oConta;
+    public SubConta(Conta conta, int sequencia, Date dataVencimento, Date dataPagamento, double valorParcela, double valorPago) {
+        this.conta = conta;
         this.sequencia = sequencia;
         this.dataVencimento = dataVencimento;
         this.dataPagamento = dataPagamento;
@@ -25,12 +25,12 @@ public class SubConta {
         this.valorPago = valorPago;
     }
 
-    public Conta getoConta() {
-        return oConta;
+    public Conta getConta() {
+        return conta;
     }
 
-    public void setoConta(Conta oConta) {
-        this.oConta = oConta;
+    public void setConta(Conta conta) {
+        this.conta = conta;
     }
 
     public int getSequencia() {

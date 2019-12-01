@@ -3,12 +3,12 @@ package view.model;
 import java.util.ArrayList;
 import javax.swing.table.AbstractTableModel;
 import model.SubConta;
-import util.Util;
+import util.DateUtil;
 
 public class ParcelaContaModel extends AbstractTableModel {
 
     private ArrayList<SubConta> subContas = new ArrayList<SubConta>();
-    private Util oUtil = new Util();
+    private DateUtil oUtil = new DateUtil();
 
     @Override
     public int getRowCount() {

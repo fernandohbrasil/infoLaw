@@ -1,6 +1,6 @@
 package controller;
 
-import util.Util;
+import util.DateUtil;
 import dao.ContaDao;
 import dao.EntidadeDao;
 import java.awt.event.ActionEvent;
@@ -39,7 +39,7 @@ public class ContaController {
     private FormConsultaEntidade frmConsEntidade;
     private EntidadeModel entidadeModel;
 
-    private Util oUtil;
+    private DateUtil oUtil;
 
     public ContaController() {
         frmLancaConta = new FormLancaConta(null, true);
@@ -53,7 +53,7 @@ public class ContaController {
         entidadeModel = new EntidadeModel();
         entDao = new EntidadeDao();
 
-        oUtil = new Util();
+        oUtil = new DateUtil();
 
         inicializarComponente();
     }
@@ -153,7 +153,7 @@ public class ContaController {
         frmLancaConta.cbVista.setSelected(false);
         frmLancaConta.edtData.setText(oUtil.getFormt().format(Date.from(Instant.now())));
         frmLancaConta.edtQtdParc.setText("1");
-        frmLancaConta.edtTotal.setText("0.00");
+        frmLancaConta.edtTotal.setText("0,00");
         frmLancaConta.txParcelas.setText(null);
         frmLancaConta.txObs.setText("Observação:");
     }
@@ -226,7 +226,7 @@ public class ContaController {
         String parcelas = "";
 
         parcelas = "Conta: " + this.oConta.getId() + "\n"
-                + "Cliente: " + this.oConta.getoEntidade().getNome() + "\n"
+                + "Cliente: " + this.oConta.getEntidade().getNome() + "\n"
                 + "Data Lançamento: " + oUtil.dateToString(this.oConta.getDataCriacao()) + "\n"
                 + "Valor Total: " + this.oConta.getValorTotal() + "\n\n";
 
@@ -272,7 +272,7 @@ public class ContaController {
         int qtdParcelas = Integer.parseInt(frmLancaConta.edtQtdParc.getText());
 
         this.oConta.setId(Integer.parseInt(String.valueOf(dao.getNextId())));
-        this.oConta.setoEntidade(this.entidades.get(frmLancaConta.cbCliente.getSelectedIndex()));
+        this.oConta.setEntidade(this.entidades.get(frmLancaConta.cbCliente.getSelectedIndex()));
         this.oConta.setValorTotal(Double.parseDouble(frmLancaConta.edtTotal.getText()));
         this.oConta.setDataCriacao(Date.from(Instant.now()));
         this.oConta.setStatus(getStatus());        
@@ -280,7 +280,7 @@ public class ContaController {
         if (validaCampos()) {
             if (frmLancaConta.cbVista.isSelected()) {
                 SubConta oSubConta = new SubConta();
-                oSubConta.setoConta(oConta);
+                oSubConta.setConta(oConta);
                 oSubConta.setSequencia(1);
                 oSubConta.setDataPagamento(oUtil.stringToDate(frmLancaConta.edtData.getText()));
                 oSubConta.setDataVencimento(oUtil.stringToDate(frmLancaConta.edtData.getText()));
@@ -292,7 +292,7 @@ public class ContaController {
                 for (int i = 0; i < qtdParcelas; i++) {
                     SubConta oSubConta = new SubConta();
 
-                    oSubConta.setoConta(oConta);
+                    oSubConta.setConta(oConta);
                     oSubConta.setSequencia(i + 1);
                     oSubConta.setValorParcela(oConta.getValorTotal() / qtdParcelas);
                     oSubConta.setDataVencimento(oUtil.addMonth(oUtil.stringToDate(frmLancaConta.edtData.getText()), i));

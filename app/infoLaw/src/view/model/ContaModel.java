@@ -3,12 +3,12 @@ package view.model;
 import java.util.ArrayList;
 import javax.swing.table.AbstractTableModel;
 import model.Conta;
-import util.Util;
+import util.DateUtil;
 
 public class ContaModel extends AbstractTableModel {
 
     private ArrayList<Conta> contas = new ArrayList<Conta>();
-    private Util oUtil = new Util();
+    private DateUtil oUtil = new DateUtil();
 
     @Override
     public int getRowCount() {
@@ -30,7 +30,7 @@ public class ContaModel extends AbstractTableModel {
         if (columnIndex == 0) {
             return oConta.getId();
         } else if (columnIndex == 1) {
-            return oConta.getoEntidade().getNome();
+            return oConta.getEntidade().getNome();
         } else if (columnIndex == 2) {
             return oUtil.dateToString(oConta.getDataCriacao());
         } else {

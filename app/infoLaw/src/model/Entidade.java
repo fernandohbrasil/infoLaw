@@ -6,7 +6,7 @@ public class Entidade {
     private String nome;
     private String telefone;
     private String email;
-    private Municipio oMunicipio;
+    private Municipio municipio;
     private String cep;
     private String bairro;
     private String rua;
@@ -19,12 +19,12 @@ public class Entidade {
     public Entidade() {
     }
 
-    public Entidade(int id, String nome, String telefone, String email, Municipio oMunicipio, String cep, String bairro, String rua, String numero, String cpf, String rg, String cnpj, String ie) {
+    public Entidade(int id, String nome, String telefone, String email, Municipio municipio, String cep, String bairro, String rua, String numero, String cpf, String rg, String cnpj, String ie) {
         this.id = id;
         this.nome = nome;
         this.telefone = telefone;
         this.email = email;
-        this.oMunicipio = oMunicipio;
+        this.municipio = municipio;
         this.cep = cep;
         this.bairro = bairro;
         this.rua = rua;
@@ -67,12 +67,12 @@ public class Entidade {
         this.email = email;
     }
 
-    public Municipio getoMunicipio() {
-        return oMunicipio;
+    public Municipio getMunicipio() {
+        return municipio;
     }
 
-    public void setoMunicipio(Municipio oMunicipio) {
-        this.oMunicipio = oMunicipio;
+    public void setMunicipio(Municipio municipio) {
+        this.municipio = municipio;
     }
 
     public String getBairro() {

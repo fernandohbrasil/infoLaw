@@ -100,7 +100,7 @@ public class DivideValoresController {
         int contaId = 0;
         int sequencia = 0;
 
-        contaId = subContaModel.getSubConta(frmDivideValores.tbParcelas.getSelectedRow()).getoConta().getId();
+        contaId = subContaModel.getSubConta(frmDivideValores.tbParcelas.getSelectedRow()).getConta().getId();
         sequencia = subContaModel.getSubConta(frmDivideValores.tbParcelas.getSelectedRow()).getSequencia();
 
         if ((contaId > 0) && (sequencia > 0)) {

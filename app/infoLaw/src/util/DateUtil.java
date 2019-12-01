@@ -7,7 +7,7 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import javax.swing.JOptionPane;
 
-public class Util {
+public class DateUtil {
 
     public SimpleDateFormat formt;
     private final SimpleDateFormat dataFull;
@@ -15,7 +15,7 @@ public class Util {
     private final SimpleDateFormat monthFormat;
     private final SimpleDateFormat yearFormat;
 
-    public Util() {
+    public DateUtil() {
         formt = new SimpleDateFormat("dd/MM/yyyy");
         dataFull = new SimpleDateFormat("EEEE, d' de 'MMMM' de 'yyyy");
         dayFormat = new SimpleDateFormat("dd");

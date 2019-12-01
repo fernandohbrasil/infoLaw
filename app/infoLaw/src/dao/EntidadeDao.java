@@ -15,7 +15,7 @@ public class EntidadeDao {
 
     public boolean insert(Entidade oEntidade) throws SQLException {
         try {
-            conexao = Conexao.getConexao();
+            conexao = Conexao.getConnection();
             stmt = conexao.prepareStatement(
                     "insert into entidade (id,nome, telefone, email, municipioId, cep, bairro, rua, numero, cpf, rg, cnpj, ie)"
                     + " values "
@@ -25,7 +25,7 @@ public class EntidadeDao {
             stmt.setString(2, oEntidade.getNome());
             stmt.setString(3, oEntidade.getTelefone());
             stmt.setString(4, oEntidade.getEmail());
-            stmt.setInt(5, oEntidade.getoMunicipio().getId());
+            stmt.setInt(5, oEntidade.getMunicipio().getId());
             stmt.setString(6, oEntidade.getCep());
             stmt.setString(7, oEntidade.getBairro());
             stmt.setString(8, oEntidade.getRua());
@@ -51,7 +51,7 @@ public class EntidadeDao {
 
     public boolean update(Entidade oEntidade) {
         try {
-            conexao = Conexao.getConexao();
+            conexao = Conexao.getConnection();
             stmt = conexao.prepareStatement("update entidade set "
                     + "nome = ?,"
                     + "telefone = ?,"
@@ -71,7 +71,7 @@ public class EntidadeDao {
             stmt.setString(1, oEntidade.getNome());
             stmt.setString(2, oEntidade.getTelefone());
             stmt.setString(3, oEntidade.getEmail());
-            stmt.setInt(4, oEntidade.getoMunicipio().getId());
+            stmt.setInt(4, oEntidade.getMunicipio().getId());
             stmt.setString(5, oEntidade.getCep());
             stmt.setString(6, oEntidade.getBairro());
             stmt.setString(7, oEntidade.getRua());
@@ -100,7 +100,7 @@ public class EntidadeDao {
 
     public boolean delete(Entidade oEntidade) {
         try {
-            conexao = Conexao.getConexao();
+            conexao = Conexao.getConnection();
             stmt = conexao.prepareStatement("delete from entidade where id = ?");
             stmt.setInt(1, oEntidade.getId());
             stmt.execute();
@@ -119,7 +119,7 @@ public class EntidadeDao {
 
     public int getNextId() {
         try {
-            conexao = Conexao.getConexao();
+            conexao = Conexao.getConnection();
             stmt = conexao.prepareStatement("select coalesce(max(id), 0) + 1 as codigo from entidade");
             ResultSet rs = stmt.executeQuery();
             rs.next();
@@ -139,7 +139,7 @@ public class EntidadeDao {
 
     public List<Entidade> buscarTodos() {
         try {
-            conexao = Conexao.getConexao();
+            conexao = Conexao.getConnection();
             stmt = conexao.prepareStatement(
                     "select id, nome, telefone, email, municipioId, cep, bairro, rua, numero, cpf, rg, cnpj, ie "
                     + "from entidade "
@@ -154,7 +154,7 @@ public class EntidadeDao {
                 oEnt.setNome(rs.getString("nome"));
                 oEnt.setTelefone(rs.getString("telefone"));
                 oEnt.setEmail(rs.getString("email"));
-                oEnt.setoMunicipio(new MunicipioDao().findById(rs.getInt("municipioId")));
+                oEnt.setMunicipio(new MunicipioDao().findById(rs.getInt("municipioId")));
                 oEnt.setCep(rs.getString("cep"));
                 oEnt.setBairro(rs.getString("bairro"));
                 oEnt.setRua(rs.getString("rua"));

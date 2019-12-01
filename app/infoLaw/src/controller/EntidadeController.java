@@ -299,8 +299,8 @@ public class EntidadeController {
         frmCadEntidade.edtNome.setText(oEntidade.getNome());
         frmCadEntidade.edtFone.setText(oEntidade.getTelefone());
         frmCadEntidade.edtEmail.setText(oEntidade.getEmail());
-        frmCadEntidade.cbUF.setSelectedIndex(getIndexUf(oEntidade.getoMunicipio().getUf()));
-        frmCadEntidade.cbMunicipio. setSelectedItem(oEntidade.getoMunicipio().getNome());        
+        frmCadEntidade.cbUF.setSelectedIndex(getIndexUf(oEntidade.getMunicipio().getUf()));
+        frmCadEntidade.cbMunicipio. setSelectedItem(oEntidade.getMunicipio().getNome());        
         frmCadEntidade.edtCep.setText(oEntidade.getCep());
         frmCadEntidade.edtBairro.setText(oEntidade.getBairro());
         frmCadEntidade.edtRua.setText(oEntidade.getRua());

@@ -5,7 +5,7 @@ import java.util.Date;
 public class Conta {
 
     private int id;
-    private Entidade oEntidade;
+    private Entidade entidade;
     private Date dataCriacao;
     private Double valorTotal;
     private int status;
@@ -14,9 +14,9 @@ public class Conta {
     public Conta() {
     }
 
-    public Conta(int id, Entidade oEntidade, Date dataCriacao, Double valorTotal, int status) {
+    public Conta(int id, Entidade entidade, Date dataCriacao, Double valorTotal, int status) {
         this.id = id;
-        this.oEntidade = oEntidade;
+        this.entidade = entidade;
         this.dataCriacao = dataCriacao;
         this.valorTotal = valorTotal;
         this.status = status;
@@ -30,12 +30,12 @@ public class Conta {
         this.id = id;
     }
 
-    public Entidade getoEntidade() {
-        return oEntidade;
+    public Entidade getEntidade() {
+        return entidade;
     }
 
-    public void setoEntidade(Entidade oEntidade) {
-        this.oEntidade = oEntidade;
+    public void setEntidade(Entidade entidade) {
+        this.entidade = entidade;
     }
 
     public Date getDataCriacao() {

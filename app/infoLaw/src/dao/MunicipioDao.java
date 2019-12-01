@@ -15,7 +15,7 @@ public class MunicipioDao {
 
     public boolean insert(Municipio oMunicipio) throws SQLException {
         try {
-            conexao = Conexao.getConexao();
+            conexao = Conexao.getConnection();
             stmt = conexao.prepareStatement("insert into municipio (id, nome, uf, cep) values (?, ?, ?, ?)");
 
             stmt.setInt(1, oMunicipio.getId());
@@ -40,7 +40,7 @@ public class MunicipioDao {
 
     public boolean update(Municipio oMunicipio) {
         try {
-            conexao = Conexao.getConexao();
+            conexao = Conexao.getConnection();
             stmt = conexao.prepareStatement("update municipio set nome = ?, uf = ?, cep = ? where id = ?");
 
             stmt.setString(1, oMunicipio.getNome());
@@ -64,7 +64,7 @@ public class MunicipioDao {
 
     public boolean delete(Municipio oMunicipio) {
         try {
-            conexao = Conexao.getConexao();
+            conexao = Conexao.getConnection();
             stmt = conexao.prepareStatement(
                     "delete from municipio where id = ?");
             stmt.setInt(1, oMunicipio.getId());
@@ -84,7 +84,7 @@ public class MunicipioDao {
 
     public int getNextId() {
         try {
-            conexao = Conexao.getConexao();
+            conexao = Conexao.getConnection();
             stmt = conexao.prepareStatement("select coalesce(max(id), 0) + 1 as codigo from municipio");
             ResultSet rs = stmt.executeQuery();
             rs.next();
@@ -104,7 +104,7 @@ public class MunicipioDao {
 
     public Municipio findById(int id) {
         try {
-            conexao = Conexao.getConexao();
+            conexao = Conexao.getConnection();
             stmt = conexao.prepareStatement("select id, nome, uf, cep from municipio  where id = ? ");
             stmt.setInt(1, id);
             ResultSet rs = stmt.executeQuery();
@@ -132,7 +132,7 @@ public class MunicipioDao {
 
     public Municipio findByName(String nome) {
         try {
-            conexao = Conexao.getConexao();
+            conexao = Conexao.getConnection();
             stmt = conexao.prepareStatement("select id, nome, uf, cep from municipio  where nome = ? ");
             stmt.setString(1, nome);
             ResultSet rs = stmt.executeQuery();
@@ -160,7 +160,7 @@ public class MunicipioDao {
 
     public List<Municipio> findByUf(String uf) {
         try {
-            conexao = Conexao.getConexao();
+            conexao = Conexao.getConnection();
             stmt = conexao.prepareStatement("select id, nome, uf, cep from municipio  where uf = ? order by id ");
             stmt.setString(1, uf);
             ResultSet rs = stmt.executeQuery();
@@ -192,7 +192,7 @@ public class MunicipioDao {
 
     public List<Municipio> buscarTodos() {
         try {
-            conexao = Conexao.getConexao();
+            conexao = Conexao.getConnection();
             stmt = conexao.prepareStatement(
                     "select id, nome, uf, cep "
                     + "from municipio "

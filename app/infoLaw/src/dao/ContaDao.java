@@ -19,14 +19,14 @@ public class ContaDao {
 
     public boolean insert(Conta oConta, ArrayList<SubConta> parcelas) throws SQLException {
         try {
-            conexao = Conexao.getConexao();
+            conexao = Conexao.getConnection();
             stmt = conexao.prepareStatement(
                     "insert into conta (id, entidadeId, dataCriacao, valorTotal, status, obs) "
                     + " values "
                     + "  (?, ?, ?, ?, ?, ?)");
 
             stmt.setInt(1, oConta.getId());
-            stmt.setInt(2, oConta.getoEntidade().getId());
+            stmt.setInt(2, oConta.getEntidade().getId());
             stmt.setDate(3, new java.sql.Date(oConta.getDataCriacao().getTime()));
             stmt.setDouble(4, oConta.getValorTotal());
             stmt.setInt(5, oConta.getStatus());
@@ -49,7 +49,7 @@ public class ContaDao {
 
     private boolean insertSubConta(ArrayList<SubConta> parcelas) throws SQLException {
         try {
-            conexao = Conexao.getConexao();
+            conexao = Conexao.getConnection();
 
             for (int i = 0; i < parcelas.size(); i++) {
                 stmt = conexao.prepareStatement(
@@ -57,7 +57,7 @@ public class ContaDao {
                         + " values "
                         + "  (?, ?, ?, ?, ?, ?, ?)");
 
-                stmt.setInt(1, parcelas.get(i).getoConta().getId());
+                stmt.setInt(1, parcelas.get(i).getConta().getId());
                 stmt.setInt(2, parcelas.get(i).getSequencia());
                 stmt.setDate(3, new java.sql.Date(parcelas.get(i).getDataVencimento().getTime()));
 
@@ -81,11 +81,11 @@ public class ContaDao {
             return true;
         } catch (SQLException e) {
             stmt = conexao.prepareStatement("delete from subConta where contaID = ?");
-            stmt.setInt(1, parcelas.get(0).getoConta().getId());
+            stmt.setInt(1, parcelas.get(0).getConta().getId());
             stmt.execute();
 
             stmt = conexao.prepareStatement("delete from conta where id = ?");
-            stmt.setInt(1, parcelas.get(0).getoConta().getId());
+            stmt.setInt(1, parcelas.get(0).getConta().getId());
             stmt.execute();
             System.err.println("ERRO:" + e.toString());
             return false;
@@ -101,7 +101,7 @@ public class ContaDao {
 
     public int getNextId() {
         try {
-            conexao = Conexao.getConexao();
+            conexao = Conexao.getConnection();
             stmt = conexao.prepareStatement("select coalesce(max(id), 0) + 1 as codigo from conta");
             ResultSet rs = stmt.executeQuery();
             rs.next();
@@ -121,7 +121,7 @@ public class ContaDao {
 
     public List<SubConta> buscaDataVencimento(Date dtInicial, Date dtFinal, int pagRec) {
         try {
-            conexao = Conexao.getConexao();
+            conexao = Conexao.getConnection();
             stmt = conexao.prepareStatement("select \n"
                     + "  subConta.contaID,\n"
                     + "  subConta.sequencia,\n"
@@ -162,7 +162,7 @@ public class ContaDao {
 
                 oEnt.setNome(rs.getString("nome"));
                 oConta.setDataCriacao(rs.getDate("dataCriacao"));
-                oConta.setoEntidade(oEnt);
+                oConta.setEntidade(oEnt);
                 oConta.setId(rs.getInt("contaID"));
 
                 oSub.setSequencia(rs.getInt("sequencia"));
@@ -170,7 +170,7 @@ public class ContaDao {
                 oSub.setDataVencimento(rs.getDate("dataVencimento"));
                 oSub.setValorParcela(rs.getDouble("valorParcela"));
                 oSub.setValorPago(rs.getDouble("valorPago"));
-                oSub.setoConta(oConta);
+                oSub.setConta(oConta);
 
                 contas.add(oSub);
             }
@@ -189,7 +189,7 @@ public class ContaDao {
 
     public List<SubConta> buscaDataVencimentoCliente(Date dtInicial, Date dtFinal, int pagRec, int entidadeId) {
         try {
-            conexao = Conexao.getConexao();
+            conexao = Conexao.getConnection();
             stmt = conexao.prepareStatement("select \n"
                     + "  subConta.ContaId,\n"
                     + "  subConta.sequencia,\n"
@@ -233,7 +233,7 @@ public class ContaDao {
 
                 oEnt.setNome(rs.getString("nome"));
                 oConta.setDataCriacao(rs.getDate("dataCriacao"));
-                oConta.setoEntidade(oEnt);
+                oConta.setEntidade(oEnt);
                 oConta.setId(rs.getInt("ContaId"));
 
                 oSub.setSequencia(rs.getInt("sequencia"));
@@ -241,7 +241,7 @@ public class ContaDao {
                 oSub.setDataVencimento(rs.getDate("dataVencimento"));
                 oSub.setValorParcela(rs.getDouble("valorParcela"));
                 oSub.setValorPago(rs.getDouble("valorPago"));
-                oSub.setoConta(oConta);
+                oSub.setConta(oConta);
 
                 contas.add(oSub);
             }
@@ -260,7 +260,7 @@ public class ContaDao {
 
     public List<SubConta> buscaDataPagamento(Date dtInicial, Date dtFinal, int pagRec) {
         try {
-            conexao = Conexao.getConexao();
+            conexao = Conexao.getConnection();
             stmt = conexao.prepareStatement("select "
                     + "  subConta.ContaId,\n"
                     + "  subConta.sequencia,\n"
@@ -300,7 +300,7 @@ public class ContaDao {
 
                 oEnt.setNome(rs.getString("nome"));
                 oConta.setDataCriacao(rs.getDate("dataCriacao"));
-                oConta.setoEntidade(oEnt);
+                oConta.setEntidade(oEnt);
                 oConta.setId(rs.getInt("ContaId"));
 
                 oSub.setSequencia(rs.getInt("sequencia"));
@@ -308,7 +308,7 @@ public class ContaDao {
                 oSub.setDataVencimento(rs.getDate("dataVencimento"));
                 oSub.setValorParcela(rs.getDouble("valorParcela"));
                 oSub.setValorPago(rs.getDouble("valorPago"));
-                oSub.setoConta(oConta);
+                oSub.setConta(oConta);
 
                 contas.add(oSub);
             }
@@ -327,7 +327,7 @@ public class ContaDao {
 
     public List<SubConta> buscaDataPagamentoCliente(Date dtInicial, Date dtFinal, int pagRec, int entidadeId) {
         try {
-            conexao = Conexao.getConexao();
+            conexao = Conexao.getConnection();
             stmt = conexao.prepareStatement("select "
                     + "  subConta.ContaId,\n"
                     + "  subConta.sequencia,\n"
@@ -350,7 +350,7 @@ public class ContaDao {
                     + "  and\n"
                     + "  entidadeID = ?\n"
                     + "  and\n"
-                    + "  subConta.situacao = 0 \n"
+                    + "  subConta.situacao = 1 \n"
                     + "order by \n"
                     + "  subConta.dataPagamento");
 
@@ -370,7 +370,7 @@ public class ContaDao {
 
                 oEnt.setNome(rs.getString("nome"));
                 oConta.setDataCriacao(rs.getDate("dataCriacao"));
-                oConta.setoEntidade(oEnt);
+                oConta.setEntidade(oEnt);
                 oConta.setId(rs.getInt("ContaId"));
 
                 oSub.setSequencia(rs.getInt("sequencia"));
@@ -378,7 +378,7 @@ public class ContaDao {
                 oSub.setDataVencimento(rs.getDate("dataVencimento"));
                 oSub.setValorParcela(rs.getDouble("valorParcela"));
                 oSub.setValorPago(rs.getDouble("valorPago"));
-                oSub.setoConta(oConta);
+                oSub.setConta(oConta);
 
                 contas.add(oSub);
             }
@@ -397,7 +397,7 @@ public class ContaDao {
 
     public List<SubConta> buscaCliente(int pagRec, int entidadeId) {
         try {
-            conexao = Conexao.getConexao();
+            conexao = Conexao.getConnection();
             stmt = conexao.prepareStatement("select \n"
                     + "  subConta.ContaId,\n"
                     + "  subConta.sequencia,\n"
@@ -436,7 +436,7 @@ public class ContaDao {
 
                 oEnt.setNome(rs.getString("nome"));
                 oConta.setDataCriacao(rs.getDate("dataCriacao"));
-                oConta.setoEntidade(oEnt);
+                oConta.setEntidade(oEnt);
                 oConta.setId(rs.getInt("ContaId"));
 
                 oSub.setSequencia(rs.getInt("sequencia"));
@@ -444,7 +444,7 @@ public class ContaDao {
                 oSub.setDataVencimento(rs.getDate("dataVencimento"));
                 oSub.setValorParcela(rs.getDouble("valorParcela"));
                 oSub.setValorPago(rs.getDouble("valorPago"));
-                oSub.setoConta(oConta);
+                oSub.setConta(oConta);
 
                 contas.add(oSub);
             }
@@ -463,7 +463,7 @@ public class ContaDao {
 
     public boolean baixarConta(SubConta oSubConta) {
         try {
-            conexao = Conexao.getConexao();
+            conexao = Conexao.getConnection();
             stmt = conexao.prepareStatement("update \n"
                     + "    subConta \n"
                     + "set \n"
@@ -475,7 +475,7 @@ public class ContaDao {
                     + "    and \n"
                     + "    sequencia = ?");
             stmt.setDate(1, new java.sql.Date(Date.from(Instant.now()).getTime()));
-            stmt.setInt(2, oSubConta.getoConta().getId());
+            stmt.setInt(2, oSubConta.getConta().getId());
             stmt.setInt(3, oSubConta.getSequencia());
             stmt.execute();
 
@@ -494,7 +494,7 @@ public class ContaDao {
 
     public List<Conta> buscaContas(int pagRec) {
         try {
-            conexao = Conexao.getConexao();
+            conexao = Conexao.getConnection();
             stmt = conexao.prepareStatement(""
                     + "Select \n"
                     + "    conta.id,\n"
@@ -508,7 +508,7 @@ public class ContaDao {
                     + "    and\n"
                     + "    conta.status = ?\n"
                     + "order by\n"
-                    + "    1");
+                    + "    2");
 
             stmt.setInt(1, pagRec);
 
@@ -523,7 +523,7 @@ public class ContaDao {
                 oEnt.setNome(rs.getString("nome"));
                 oConta.setDataCriacao(rs.getDate("dataCriacao"));
                 oConta.setValorTotal(rs.getDouble("valorTotal"));
-                oConta.setoEntidade(oEnt);
+                oConta.setEntidade(oEnt);
                 contas.add(oConta);
             }
             return contas;
@@ -541,7 +541,7 @@ public class ContaDao {
 
     public List<SubConta> buscaParcelas(int contaId) {
         try {
-            conexao = Conexao.getConexao();
+            conexao = Conexao.getConnection();
             stmt = conexao.prepareStatement(""
                     + "Select \n"
                     + "    subConta.sequencia, \n"
@@ -588,7 +588,7 @@ public class ContaDao {
 
     public boolean cancelaConta(int contaId) {
         try {
-            conexao = Conexao.getConexao();
+            conexao = Conexao.getConnection();
             stmt = conexao.prepareStatement("update \n"
                     + "    subConta \n"
                     + "set \n"
@@ -614,7 +614,7 @@ public class ContaDao {
 
     public boolean cancelaParcela(int contaId, int sequencia) {
         try {
-            conexao = Conexao.getConexao();
+            conexao = Conexao.getConnection();
             stmt = conexao.prepareStatement("update \n"
                     + "    subConta \n"
                     + "set \n"
@@ -643,7 +643,7 @@ public class ContaDao {
 
     public String getObsConta(int id) {
         try {
-            conexao = Conexao.getConexao();
+            conexao = Conexao.getConnection();
             stmt = conexao.prepareStatement("select obs from conta where id = ?");
             stmt.setInt(1, id);
             ResultSet rs = stmt.executeQuery();
@@ -663,7 +663,7 @@ public class ContaDao {
 
     public List<SubConta> buscaParcelasNaoDividas(int pagRec) {
         try {
-            conexao = Conexao.getConexao();
+            conexao = Conexao.getConnection();
             stmt = conexao.prepareStatement("select \n"
                     + "  subConta.*,\n"
                     + "  conta.dataCriacao, \n"
@@ -697,9 +697,9 @@ public class ContaDao {
 
                 oConta.setId(rs.getInt("ContaId"));
                 oConta.setDataCriacao((rs.getDate("dataCriacao")));
-                oConta.setoEntidade(oEntidade);
+                oConta.setEntidade(oEntidade);
                 
-                parcela.setoConta(oConta);
+                parcela.setConta(oConta);
                 parcela.setSequencia((rs.getInt("sequencia")));
                 parcela.setDataVencimento((rs.getDate("dataVencimento")));
                 parcela.setDataPagamento((rs.getDate("dataPagamento")));
@@ -724,7 +724,7 @@ public class ContaDao {
 
     public boolean divideParcela(int contaId, int sequencia) {
         try {
-            conexao = Conexao.getConexao();
+            conexao = Conexao.getConnection();
             stmt = conexao.prepareStatement("update \n"
                     + "    subConta \n"
                     + "set \n"

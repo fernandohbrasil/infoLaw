@@ -35,7 +35,7 @@ create table conta (
   entidadeID int not null, 
   dataCriacao date not null,
   valorTotal numeric(16,4),
-  status int default 0 not null,
+  status int default 0 not null, --(0 = receber, 1 = pagar)
   constraint fk_conta_entidade foreign key (entidadeID) references entidade (id));
 
 create table subConta (
@@ -60,4 +60,4 @@ insert into versao (numVersao) values (1);
 ----------------
 alter table subConta add situacao int DEFAULT (0); --(0 = aberto, 1 = Pago, 2 = cancelado)
 alter table Conta add obs VARCHAR (500);
-alter table subConta add repassado int DEFAULT (0); --(0 = Não, 1= Sim)
+alter table subConta add repassado int DEFAULT (0); --(0 = Não, 1 = Sim)

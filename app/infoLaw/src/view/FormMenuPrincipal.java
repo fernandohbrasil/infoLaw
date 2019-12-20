@@ -54,7 +54,7 @@ public class FormMenuPrincipal extends javax.swing.JFrame {
 
         mRelatorios.setText("Relatorios");
 
-        miRelFinancas.setText("Entradas e Saídas");
+        miRelFinancas.setText("Relatório de Finanças");
         mRelatorios.add(miRelFinancas);
 
         mbMenuPrincipal.add(mRelatorios);

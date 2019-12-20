@@ -1,18 +1,17 @@
 package controller;
 
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import view.FormMenuPrincipal;
 
 public class PrincipalController {
-
-    private FormMenuPrincipal frmPrincipal;
-    private MunicipioController municipioCtrl;
-    private EntidadeController entidadeCtrl;
-    private ContaController contaCtrl;
-    private BaixaController baixaCtrl;
-    private CancelaContasController cancelaContasCtrl;
-    private DivideValoresController divideValoresCtrl;
+    private final FormMenuPrincipal frmPrincipal;
+    private final MunicipioController municipioCtrl;
+    private final EntidadeController entidadeCtrl;
+    private final ContaController contaCtrl;
+    private final BaixaController baixaCtrl;
+    private final RelatorioBaseController relatorioBaseCtrl;
+    private final CancelaContasController cancelaContasCtrl;
+    private final DivideValoresController divideValoresCtrl;
 
     public PrincipalController() {
         frmPrincipal = new FormMenuPrincipal();
@@ -20,6 +19,7 @@ public class PrincipalController {
         entidadeCtrl = new EntidadeController();
         contaCtrl = new ContaController();
         baixaCtrl = new BaixaController();
+        relatorioBaseCtrl = new RelatorioBaseController();
         cancelaContasCtrl = new CancelaContasController();
         divideValoresCtrl = new DivideValoresController();
 
@@ -28,46 +28,32 @@ public class PrincipalController {
 
     private void inicializarComponentes() {
 
-        frmPrincipal.miCadMunicipio.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                municipioCtrl.cadastrarMunicipio();
-            }
+        frmPrincipal.miCadMunicipio.addActionListener((ActionEvent e) -> {
+            municipioCtrl.cadastrarMunicipio();
         });
 
-        frmPrincipal.miCadEntidade.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                entidadeCtrl.cadastrarEntidade();
-            }
+        frmPrincipal.miCadEntidade.addActionListener((ActionEvent e) -> {
+            entidadeCtrl.cadastrarEntidade();
         });
 
-        frmPrincipal.miCadLancamento.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                contaCtrl.lancarConta();
-            }
+        frmPrincipal.miCadLancamento.addActionListener((ActionEvent e) -> {
+            contaCtrl.lancarConta();
         });
 
-        frmPrincipal.miBaixaLancamento.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                baixaCtrl.baixaContas();
-            }
+        frmPrincipal.miBaixaLancamento.addActionListener((ActionEvent e) -> {
+            baixaCtrl.baixaContas();
+        });
+        
+        frmPrincipal.miRelFinancas.addActionListener((ActionEvent e) -> {
+            relatorioBaseCtrl.init();
         });
 
-        frmPrincipal.miCancelaContas.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                cancelaContasCtrl.cancelaContas();
-            }
+        frmPrincipal.miCancelaContas.addActionListener((ActionEvent e) -> {
+            cancelaContasCtrl.cancelaContas();
         });
 
-        frmPrincipal.miDivideContas.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                divideValoresCtrl.divideContas();
-            }
+        frmPrincipal.miDivideContas.addActionListener((ActionEvent e) -> {
+            divideValoresCtrl.divideContas();
         });
     }
 

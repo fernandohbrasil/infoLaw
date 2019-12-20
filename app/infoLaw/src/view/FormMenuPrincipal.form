@@ -76,7 +76,7 @@
           <SubComponents>
             <MenuItem class="javax.swing.JMenuItem" name="miRelFinancas">
               <Properties>
-                <Property name="text" type="java.lang.String" value="Entradas e Sa&#xed;das"/>
+                <Property name="text" type="java.lang.String" value="Relat&#xf3;rio de Finan&#xe7;as"/>
               </Properties>
               <AuxValues>
                 <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="1"/>

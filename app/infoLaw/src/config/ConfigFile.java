@@ -28,8 +28,8 @@ public class ConfigFile {
 
     public static String leDadosArquivo() {
         String path = "";
-        String arquivo = "config.ini";
-        try {
+        try {                                       
+            String arquivo = "config.ini";
             if (abreArquivo(arquivo)) {
                 String linha = leitor.readLine();
 
@@ -50,5 +50,5 @@ public class ConfigFile {
         }
         fechaArquivo();
         return path;
-    }
+    } 
 }

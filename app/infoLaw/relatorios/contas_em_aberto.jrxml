@@ -7,22 +7,9 @@
 		<defaultValueExpression><![CDATA[1]]></defaultValueExpression>
 	</parameter>
 	<queryString>
-		<![CDATA[Select * from entidade where id = $P{id}]]>
+		<![CDATA[Select nome from entidade where id = $P{id}]]>
 	</queryString>
-	<field name="id" class="java.lang.Object"/>
 	<field name="nome" class="java.lang.Object"/>
-	<field name="telefone" class="java.lang.Object"/>
-	<field name="email" class="java.lang.Object"/>
-	<field name="municipioId" class="java.lang.Object"/>
-	<field name="cep" class="java.lang.Object"/>
-	<field name="bairro" class="java.lang.Object"/>
-	<field name="rua" class="java.lang.Object"/>
-	<field name="numero" class="java.lang.Object"/>
-	<field name="complemento" class="java.lang.Object"/>
-	<field name="cpf" class="java.lang.Object"/>
-	<field name="rg" class="java.lang.Object"/>
-	<field name="cnpj" class="java.lang.Object"/>
-	<field name="ie" class="java.lang.Object"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>

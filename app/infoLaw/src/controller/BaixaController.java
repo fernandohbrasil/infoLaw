@@ -26,19 +26,19 @@ import view.model.EntidadeModel;
 public class BaixaController {
 
     private FormBaixaConta frmBaixaConta;
-    private ContaDao dao;
+    private final ContaDao dao;
 
     ArrayList<SubConta> parcelas;
 
     private Entidade oEntidade;
-    private EntidadeModel entidadeModel;
-    private EntidadeDao entDao;
+    private final EntidadeModel entidadeModel;
+    private final EntidadeDao entDao;
     private ArrayList<Entidade> entidades;
 
-    private FormConsultaEntidade frmConsEntidade;
-    private SubContaModel contaModel;
+    private final FormConsultaEntidade frmConsEntidade;
+    private final SubContaModel contaModel;
 
-    private DateUtil oUtil;
+    private final DateUtil oUtil;
 
     public BaixaController() {
         frmBaixaConta = new FormBaixaConta(frmBaixaConta, true);
@@ -78,6 +78,7 @@ public class BaixaController {
         frmConsEntidade.tbEntidade.setModel(entidadeModel);
 
         frmConsEntidade.tbEntidade.addMouseListener(new MouseAdapter() {
+            @Override
             public void mousePressed(MouseEvent me) {
                 if (me.getClickCount() == 2) {
                     selecionaClienteId();
@@ -85,11 +86,8 @@ public class BaixaController {
             }
         });
 
-        frmBaixaConta.btnConsCli.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                consultarEntidade();
-            }
+        frmBaixaConta.btnConsCli.addActionListener((ActionEvent e) -> {
+            consultarEntidade();
         });
 
         frmBaixaConta.btnPagar.addActionListener(new ActionListener() {

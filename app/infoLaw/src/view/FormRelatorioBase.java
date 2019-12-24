@@ -191,7 +191,6 @@ public class FormRelatorioBase extends javax.swing.JFrame {
         btnImprimir.setMinimumSize(new java.awt.Dimension(80, 30));
         btnImprimir.setPreferredSize(new java.awt.Dimension(105, 30));
         getContentPane().add(btnImprimir, new org.netbeans.lib.awtextra.AbsoluteConstraints(240, 270, 110, 30));
-        btnImprimir.getAccessibleContext().setAccessibleName("Imprimir");
 
         pack();
         setLocationRelativeTo(null);

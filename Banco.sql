@@ -1,12 +1,13 @@
-drop table if exists versao;
+drop table if exists filial;
 drop table if exists subConta;
 drop table if exists conta;
 drop table if exists entidade;
 drop table if exists municipio;
 drop table if exists usuario;
 
-create table versao(
-    numVersao int not null);
+create table filial (
+    versao  varchar(10),
+    logo    blob sub_type 0 segment size 1000);
 
 create table municipio(
     id int not null constraint pk_municipio primary key,
@@ -35,6 +36,7 @@ create table conta (
   entidadeID int not null, 
   dataCriacao date not null,
   valorTotal numeric(16,4),
+  obs varchar (500),
   status int default 0 not null, --(0 = receber, 1 = pagar)
   constraint fk_conta_entidade foreign key (entidadeID) references entidade (id));
 
@@ -45,6 +47,8 @@ create table subConta (
   dataPagamento date,
   valorParcela numeric(16,4),
   valorPago numeric(16,4),
+  situacao int DEFAULT (0), --(0 = aberto, 1 = Pago, 2 = cancelado)
+  repassado int DEFAULT (0), --(0 = Não, 1 = Sim)
   constraint pk_subConta primary key (contaID, sequencia),
   constraint fk_subConta_conta foreign key (contaID) references conta (id));
 
@@ -54,10 +58,3 @@ create table usuario(
     email varchar(100),
     administrador int default 0 not null,
     numeroseguranca int);
-
-insert into versao (numVersao) values (1);
-
-----------------
-alter table subConta add situacao int DEFAULT (0); --(0 = aberto, 1 = Pago, 2 = cancelado)
-alter table Conta add obs VARCHAR (500);
-alter table subConta add repassado int DEFAULT (0); --(0 = Não, 1 = Sim)

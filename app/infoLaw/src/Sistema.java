@@ -1,9 +1,9 @@
-import controller.PrincipalController;
+
+import controller.LoginController;
 
 public class Sistema {
 
     public static void main(String[] args) {
-        PrincipalController principalControle = new PrincipalController();
-        principalControle.executar();
+        new LoginController().executar();
     }
 }

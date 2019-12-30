@@ -226,73 +226,16 @@ public class RelatorioBaseController {
         }
     }
 
-    /*
-    private void filtrar() {
-        List<SubConta> todos = null;
-        if (frmBaixaConta.cbData.isSelected() && (!frmBaixaConta.cbEntidade.isSelected())) {
-            //por data sem cliente
-            if (validaData()) {
-                Date ini = oUtil.stringToDate(frmBaixaConta.edtDtIni.getText());
-                Date fin = oUtil.stringToDate(frmBaixaConta.edtDtFin.getText());
-
-                if (frmBaixaConta.rgDtVenc.isSelected()) {
-                    //vencimento                    
-                    todos = dao.buscaDataVencimento(ini, fin, getStatus());
-                } else {
-                    //pagamento                    
-                    todos = dao.buscaDataPagamento(ini, fin, getStatus());
-                }
-            } else {
-                JOptionPane.showMessageDialog(frmBaixaConta, "Data Inicial ou Final inválida!");
-            }
-
-        } else if (frmBaixaConta.cbData.isSelected() && (frmBaixaConta.cbEntidade.isSelected())) {
-            //por data com cliente
-            if (validaData()) {
-                Date ini = oUtil.stringToDate(frmBaixaConta.edtDtIni.getText());
-                Date fin = oUtil.stringToDate(frmBaixaConta.edtDtFin.getText());
-                int entidadeId = Integer.parseInt(frmBaixaConta.edtCliente.getText());
-
-                if (frmBaixaConta.rgDtVenc.isSelected()) {
-                    //vencimento                    
-                    todos = dao.buscaDataVencimentoCliente(ini, fin, getStatus(), entidadeId);
-                } else {
-                    //pagamento
-                    todos = dao.buscaDataPagamentoCliente(ini, fin, getStatus(), entidadeId);
-                }
-            } else {
-                JOptionPane.showMessageDialog(frmBaixaConta, "Data Inicial ou Final inválida!");
-            }
-
-        } else if (!frmBaixaConta.cbData.isSelected() && (frmBaixaConta.cbEntidade.isSelected())) {
-            //Apenas Cliente
-            if (validaCliente()) {
-                int entidadeId = Integer.parseInt(frmBaixaConta.edtCliente.getText());
-
-                todos = dao.buscaCliente(getStatus(), entidadeId);
-            } else {
-                JOptionPane.showMessageDialog(frmBaixaConta, "Cliente não selecionado!"
-                        + "\n * Necessário que apareça o nome do cliente na tela!");
-                frmBaixaConta.cbxEntidade.grabFocus();
-            }
-
+    private int getSituacao() {
+        if (frmRelatorioBase.rgAberto.isSelected()) {
+            return 0;
+        } else if (frmRelatorioBase.rgPago.isSelected()) {
+            return 1;
+        } else {
+            return 2;
         }
-
-        double total = 0.00;
-        contaModel.limpar();
-        if (todos != null) {
-            for (SubConta subconta : todos) {
-                total = total + subconta.getValorParcela();
-                contaModel.addSubConta(subconta);
-            }
-
-            frmBaixaConta.lblResultado.setText("Total Demonstrado: " + total);
-            frmBaixaConta.lblQtdParc.setText("Quantidade de Parcelas: " + todos.size());
-        }
-
-        contaModel.fireTableDataChanged();
     }
-     */
+
     private void imprimir() {
         try {
             if (!validaData()) {
@@ -306,6 +249,8 @@ public class RelatorioBaseController {
 
             parametros.put("where_clause", getWhereClause());
             parametros.put("status", getStatus());
+            parametros.put("situacao", getSituacao());
+            parametros.put("order_by", getOrderBy());
             parametros.put("all_params", getAllParams());
             parametros.put("versao", filial.getVersao());
             parametros.put("logo", getLogo(filial));
@@ -379,7 +324,7 @@ public class RelatorioBaseController {
 
         return whereData + whereStatus + whereSituacao + whereEntidade;
     }
-    
+
     private String getParamData() {
         String result = " Data de ";
 
@@ -390,7 +335,7 @@ public class RelatorioBaseController {
         } else {
             result = result + "Vencimento: ";
         }
-        
+
         return result + frmRelatorioBase.edtDtIni.getText() + " até " + frmRelatorioBase.edtDtFin.getText() + ";";
     }
 
@@ -427,7 +372,7 @@ public class RelatorioBaseController {
         String paramEntidade = getParamEntidade();
 
         System.out.println(paramData + paramStatus + paramSituacao + paramEntidade);
-        return paramData + paramStatus + paramSituacao + paramEntidade; 
+        return paramData + paramStatus + paramSituacao + paramEntidade;
     }
 
     private BufferedImage getLogo(Filial filial) {
@@ -437,5 +382,15 @@ public class RelatorioBaseController {
             JOptionPane.showMessageDialog(frmRelatorioBase, "Erro ao buscar Logo!");
             return null;
         }
+    }
+
+    private Object getOrderBy() {
+        if (frmRelatorioBase.rgOrdem1.isSelected()) {
+            return "  1,2,4,6";
+        } else if (frmRelatorioBase.rgOrdem2.isSelected()) {
+            return "  6,1,2,4";
+        } else {
+            return "  5,1,2,4";
+        }        
     }
 }

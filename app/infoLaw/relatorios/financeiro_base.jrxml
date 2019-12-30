@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="contas_em_aberto" pageWidth="612" pageHeight="792" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="eee4c33a-6953-4d7f-b6c9-2759d775807d">
-	<property name="ireport.zoom" value="2.0"/>
+	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
 	<property name="ireport.y" value="0"/>
 	<parameter name="versao" class="java.lang.String" isForPrompting="false">
@@ -16,7 +16,7 @@
 		<defaultValueExpression><![CDATA[0]]></defaultValueExpression>
 	</parameter>
 	<parameter name="logo" class="java.lang.Object" isForPrompting="false"/>
-	<parameter name="group_by" class="java.lang.String" isForPrompting="false">
+	<parameter name="order_by" class="java.lang.String" isForPrompting="false">
 		<defaultValueExpression><![CDATA["1,2,4"]]></defaultValueExpression>
 	</parameter>
 	<parameter name="situacao" class="java.lang.Integer" isForPrompting="false">
@@ -40,7 +40,7 @@ where
   and
   $P!{where_clause}
 order by
-  $P!{group_by}]]>
+  $P!{order_by}]]>
 	</queryString>
 	<field name="NOME" class="java.lang.String"/>
 	<field name="ID" class="java.lang.Integer"/>
@@ -70,23 +70,23 @@ order by
 				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
 			</textField>
 			<textField evaluationTime="Report" pattern="##00">
-				<reportElement x="560" y="12" width="12" height="12" uuid="3eb3e065-dd55-4983-949f-30f7a524dcb5"/>
+				<reportElement x="558" y="12" width="14" height="12" uuid="3eb3e065-dd55-4983-949f-30f7a524dcb5"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="9"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
 			</textField>
 			<textField pattern="##00">
-				<reportElement x="532" y="12" width="12" height="12" uuid="5929debb-d7f3-4be4-b3ee-1e92e06e69bc"/>
+				<reportElement x="530" y="12" width="14" height="12" uuid="5929debb-d7f3-4be4-b3ee-1e92e06e69bc"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font size="9"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement stretchType="RelativeToBandHeight" x="0" y="34" width="573" height="24" uuid="f7166b9b-1f72-4963-bc97-c775fab47cc6"/>
+				<reportElement stretchType="RelativeToBandHeight" isPrintRepeatedValues="false" x="0" y="34" width="573" height="24" uuid="f7166b9b-1f72-4963-bc97-c775fab47cc6"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
-					<font fontName="SansSerif" size="18" isBold="true"/>
+					<font fontName="Serif" size="20" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA["Contas a " +($P{status} == 0 ? "Receber" : "Pagar")]]></textFieldExpression>
 			</textField>
@@ -98,7 +98,7 @@ order by
 				<textFieldExpression><![CDATA["Filtros:  " + $P{all_params}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement stretchType="RelativeToBandHeight" x="546" y="12" width="12" height="12" uuid="06975f32-7e7b-4853-b3ec-84afb8c856ff"/>
+				<reportElement stretchType="RelativeToBandHeight" x="544" y="12" width="14" height="12" uuid="06975f32-7e7b-4853-b3ec-84afb8c856ff"/>
 				<textElement textAlignment="Center" verticalAlignment="Middle">
 					<font fontName="SansSerif" size="9" isBold="false"/>
 				</textElement>

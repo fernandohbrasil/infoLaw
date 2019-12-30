@@ -16,6 +16,7 @@ public class FormRelatorioBase extends javax.swing.JFrame {
         rgbTipoConta = new javax.swing.ButtonGroup();
         rgbTipoData = new javax.swing.ButtonGroup();
         rgbStatus = new javax.swing.ButtonGroup();
+        rgbOrdenacao = new javax.swing.ButtonGroup();
         pnPrincipal = new javax.swing.JPanel();
         pnCliente = new javax.swing.JPanel();
         lblNome1 = new javax.swing.JLabel();
@@ -39,6 +40,10 @@ public class FormRelatorioBase extends javax.swing.JFrame {
         rgAberto = new javax.swing.JRadioButton();
         rgPago = new javax.swing.JRadioButton();
         rgCancelado = new javax.swing.JRadioButton();
+        pnOrdenacao = new javax.swing.JPanel();
+        rgOrdem1 = new javax.swing.JRadioButton();
+        rgOrdem2 = new javax.swing.JRadioButton();
+        rgOrdem3 = new javax.swing.JRadioButton();
         lblTitle = new javax.swing.JLabel();
         btnFechar = new javax.swing.JButton();
         btnImprimir = new javax.swing.JButton();
@@ -136,6 +141,7 @@ public class FormRelatorioBase extends javax.swing.JFrame {
         pnPrincipal.add(pnTipoConta, new org.netbeans.lib.awtextra.AbsoluteConstraints(8, 165, 170, 45));
 
         pnStatus.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)), "Status", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Serif", 0, 12))); // NOI18N
+        pnStatus.setToolTipText("");
         pnStatus.setPreferredSize(new java.awt.Dimension(105, 70));
         pnStatus.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -153,6 +159,7 @@ public class FormRelatorioBase extends javax.swing.JFrame {
         rgbStatus.add(rgCancelado);
         rgCancelado.setFont(new java.awt.Font("Serif", 0, 12)); // NOI18N
         rgCancelado.setText("Cancelado");
+        rgCancelado.setToolTipText("");
         rgCancelado.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 rgCanceladoActionPerformed(evt);
@@ -160,7 +167,38 @@ public class FormRelatorioBase extends javax.swing.JFrame {
         });
         pnStatus.add(rgCancelado, new org.netbeans.lib.awtextra.AbsoluteConstraints(170, 15, -1, -1));
 
-        pnPrincipal.add(pnStatus, new org.netbeans.lib.awtextra.AbsoluteConstraints(412, 165, 270, 45));
+        pnPrincipal.add(pnStatus, new org.netbeans.lib.awtextra.AbsoluteConstraints(190, 165, 270, 45));
+
+        pnOrdenacao.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)), "Ordenação", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Serif", 0, 12))); // NOI18N
+        pnOrdenacao.setToolTipText("");
+        pnOrdenacao.setPreferredSize(new java.awt.Dimension(107, 70));
+        pnOrdenacao.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        rgbOrdenacao.add(rgOrdem1);
+        rgOrdem1.setFont(new java.awt.Font("Serif", 0, 12)); // NOI18N
+        rgOrdem1.setSelected(true);
+        rgOrdem1.setText("Tipo 1");
+        rgOrdem1.setToolTipText("nome -> conta -> sequencia -> vencimento");
+        pnOrdenacao.add(rgOrdem1, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 15, -1, -1));
+
+        rgbOrdenacao.add(rgOrdem2);
+        rgOrdem2.setFont(new java.awt.Font("Serif", 0, 12)); // NOI18N
+        rgOrdem2.setText("Tipo 2");
+        rgOrdem2.setToolTipText("vencimento -> nome -> conta -> sequencia");
+        pnOrdenacao.add(rgOrdem2, new org.netbeans.lib.awtextra.AbsoluteConstraints(75, 15, -1, -1));
+
+        rgbOrdenacao.add(rgOrdem3);
+        rgOrdem3.setFont(new java.awt.Font("Serif", 0, 12)); // NOI18N
+        rgOrdem3.setText("Tipo 3");
+        rgOrdem3.setToolTipText("pagamento -> nome -> conta -> sequencia");
+        rgOrdem3.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                rgOrdem3ActionPerformed(evt);
+            }
+        });
+        pnOrdenacao.add(rgOrdem3, new org.netbeans.lib.awtextra.AbsoluteConstraints(140, 15, -1, -1));
+
+        pnPrincipal.add(pnOrdenacao, new org.netbeans.lib.awtextra.AbsoluteConstraints(470, 165, 212, 45));
 
         getContentPane().add(pnPrincipal, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 42, 690, 220));
 
@@ -200,6 +238,10 @@ public class FormRelatorioBase extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_rgCanceladoActionPerformed
 
+    private void rgOrdem3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_rgOrdem3ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_rgOrdem3ActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public javax.swing.JButton btnConsCli;
@@ -217,6 +259,7 @@ public class FormRelatorioBase extends javax.swing.JFrame {
     private javax.swing.JLabel lblTitle;
     private javax.swing.JPanel pnCliente;
     private javax.swing.JPanel pnData;
+    private javax.swing.JPanel pnOrdenacao;
     public javax.swing.JPanel pnPrincipal;
     private javax.swing.JPanel pnStatus;
     private javax.swing.JPanel pnTipoConta;
@@ -225,9 +268,13 @@ public class FormRelatorioBase extends javax.swing.JFrame {
     public javax.swing.JRadioButton rgDtEmissao;
     public javax.swing.JRadioButton rgDtPagamento;
     public javax.swing.JRadioButton rgDtVencimento;
+    public javax.swing.JRadioButton rgOrdem1;
+    public javax.swing.JRadioButton rgOrdem2;
+    public javax.swing.JRadioButton rgOrdem3;
     public javax.swing.JRadioButton rgPagar;
     public javax.swing.JRadioButton rgPago;
     public javax.swing.JRadioButton rgReceber;
+    private javax.swing.ButtonGroup rgbOrdenacao;
     private javax.swing.ButtonGroup rgbStatus;
     public javax.swing.ButtonGroup rgbTipoConta;
     private javax.swing.ButtonGroup rgbTipoData;

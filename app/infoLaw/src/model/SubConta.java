@@ -12,17 +12,10 @@ public class SubConta {
     private double valorPago;
     private int situacao;
     private int repassado;
+    private int usuarioid;
+    private int usuarioidalteracao;
 
     public SubConta() {
-    }
-
-    public SubConta(Conta conta, int sequencia, Date dataVencimento, Date dataPagamento, double valorParcela, double valorPago) {
-        this.conta = conta;
-        this.sequencia = sequencia;
-        this.dataVencimento = dataVencimento;
-        this.dataPagamento = dataPagamento;
-        this.valorParcela = valorParcela;
-        this.valorPago = valorPago;
     }
 
     public Conta getConta() {
@@ -101,5 +94,21 @@ public class SubConta {
 
     public void setRepassado(int repassado) {
         this.repassado = repassado;
+    }
+
+    public int getUsuarioid() {
+        return usuarioid;
+    }
+
+    public void setUsuarioid(int usuarioid) {
+        this.usuarioid = usuarioid;
+    }
+
+    public int getUsuarioidalteracao() {
+        return usuarioidalteracao;
+    }
+
+    public void setUsuarioidalteracao(int usuarioidalteracao) {
+        this.usuarioidalteracao = usuarioidalteracao;
     }
 }

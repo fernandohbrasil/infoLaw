@@ -4,7 +4,6 @@ import util.DateUtil;
 import dao.ContaDao;
 import dao.EntidadeDao;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.time.Instant;
@@ -13,7 +12,6 @@ import java.util.Date;
 import java.util.List;
 import javax.swing.JOptionPane;
 import javax.swing.event.ListSelectionEvent;
-import javax.swing.event.ListSelectionListener;
 import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
 import model.Entidade;
@@ -30,7 +28,6 @@ public class BaixaController {
 
     ArrayList<SubConta> parcelas;
 
-    private Entidade oEntidade;
     private final EntidadeModel entidadeModel;
     private final EntidadeDao entDao;
     private ArrayList<Entidade> entidades;
@@ -47,7 +44,6 @@ public class BaixaController {
         contaModel = new SubContaModel();
 
         dao = new ContaDao();
-        oEntidade = new Entidade();
         entidadeModel = new EntidadeModel();
         entDao = new EntidadeDao();
 
@@ -90,41 +86,26 @@ public class BaixaController {
             consultarEntidade();
         });
 
-        frmBaixaConta.btnPagar.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                baixarParcela();
-            }
+        frmBaixaConta.btnPagar.addActionListener((ActionEvent e) -> {
+            baixarParcela();
         });
 
-        frmBaixaConta.btnFecha.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                fechar();
-            }
+        frmBaixaConta.btnFecha.addActionListener((ActionEvent e) -> {
+            fechar();
         });
 
-        frmConsEntidade.btnFecha.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                fecharConsulta();
-            }
+        frmConsEntidade.btnFecha.addActionListener((ActionEvent e) -> {
+            fecharConsulta();
         });
 
         frmBaixaConta.tbLancamentos.setModel(contaModel);
 
-        frmBaixaConta.btnFiltrar.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                filtrar();
-            }
+        frmBaixaConta.btnFiltrar.addActionListener((ActionEvent e) -> {
+            filtrar();
         });
 
-        frmBaixaConta.tbLancamentos.getSelectionModel().addListSelectionListener(new ListSelectionListener() {
-            @Override
-            public void valueChanged(ListSelectionEvent e) {
-                buscarObs();
-            }
+        frmBaixaConta.tbLancamentos.getSelectionModel().addListSelectionListener((ListSelectionEvent e) -> {
+            buscarObs();
         });
     }
 
@@ -162,9 +143,9 @@ public class BaixaController {
         frmBaixaConta.cbxEntidade.removeAllItems();
         entidades = (ArrayList<Entidade>) entDao.buscarTodos();
 
-        for (Entidade entidades : entidades) {
+        entidades.forEach((entidades) -> {
             frmBaixaConta.cbxEntidade.addItem(entidades.getNome());
-        }
+        });
     }
 
     private void selecionaCliente() {
@@ -186,11 +167,11 @@ public class BaixaController {
         int posicao = frmConsEntidade.tbEntidade.getSelectedRow();
 
         // buscar o objeto 
-        oEntidade = entidadeModel.getEntidade(posicao);
+        Entidade entidade = entidadeModel.getEntidade(posicao);
 
         // preencher os campos do form com os dados do objeto
-        frmBaixaConta.edtCliente.setText(Integer.toString(oEntidade.getId()));
-        frmBaixaConta.cbxEntidade.setSelectedItem(oEntidade.getNome());
+        frmBaixaConta.edtCliente.setText(Integer.toString(entidade.getId()));
+        frmBaixaConta.cbxEntidade.setSelectedItem(entidade.getNome());
 
         // fechar o formulário de consulta
         frmConsEntidade.setVisible(false);
@@ -302,7 +283,7 @@ public class BaixaController {
     }
 
     private boolean validaData() {
-        boolean validou = false;
+        boolean validou;
 
         validou = oUtil.validaData(frmBaixaConta.edtDtIni.getText());
         return validou == oUtil.validaData(frmBaixaConta.edtDtFin.getText());
@@ -314,7 +295,7 @@ public class BaixaController {
         SubConta oSubConta = contaModel.getSubConta(posicao);
 
         if (oSubConta.getValorPago() <= 0) {
-            if (dao.baixarConta(oSubConta)) {
+            if (dao.baixarSubConta(oSubConta)) {
                 JOptionPane.showMessageDialog(frmBaixaConta, "Parcela paga com sucesso!");
                 filtrar();
             } else {

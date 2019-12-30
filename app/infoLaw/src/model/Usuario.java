@@ -6,7 +6,19 @@ public class Usuario {
     private String username;
     private boolean administrador;
 
-    public Usuario() {
+    private static Usuario uniqueInstance;
+
+    private Usuario() {
+
+    }
+
+    public static Usuario getInstance() {
+        synchronized (Usuario.class) {
+            if (uniqueInstance == null) {                
+                uniqueInstance = new Usuario();
+            }
+        }        
+        return uniqueInstance;
     }
 
     public int getId() {
@@ -39,5 +51,10 @@ public class Usuario {
 
     public void setAdministrador(boolean administrador) {
         this.administrador = administrador;
-    }       
+    }
+
+    @Override
+    public String toString() {
+        return "Usuario{" + "id=" + id + ", senha=" + senha + ", username=" + username + ", administrador=" + administrador + '}';
+    }        
 }

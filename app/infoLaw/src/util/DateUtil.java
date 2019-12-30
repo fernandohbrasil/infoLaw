@@ -1,5 +1,6 @@
 package util;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.util.Calendar;
@@ -50,7 +51,7 @@ public class DateUtil {
     public Date stringToDate(String aData) {
         try {
             return formt.parse(aData);
-        } catch (Exception e) {
+        } catch (ParseException e) {
             JOptionPane.showMessageDialog(null, msgData());
             return Date.from(Instant.now());
         }
@@ -59,7 +60,7 @@ public class DateUtil {
     public Date stringToDateFull(String aData) {
         try {
             return formt.parse(aData);
-        } catch (Exception e) {
+        } catch (ParseException e) {
             JOptionPane.showMessageDialog(null, msgData());
             return Date.from(Instant.now());
         }
@@ -72,7 +73,7 @@ public class DateUtil {
             valida = true;
             formt.setLenient(false);
             Date data = formt.parse(oData);
-        } catch (Exception e) {
+        } catch (ParseException e) {
             JOptionPane.showMessageDialog(null, msgData());
         }
         return valida;

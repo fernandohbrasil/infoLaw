@@ -9,17 +9,11 @@ public class Conta {
     private Date dataCriacao;
     private Double valorTotal;
     private int status;
+    private int usuarioid;
+    private int usuarioidalteracao;
     private String obs;
 
     public Conta() {
-    }
-
-    public Conta(int id, Entidade entidade, Date dataCriacao, Double valorTotal, int status) {
-        this.id = id;
-        this.entidade = entidade;
-        this.dataCriacao = dataCriacao;
-        this.valorTotal = valorTotal;
-        this.status = status;
     }
 
     public int getId() {
@@ -69,4 +63,22 @@ public class Conta {
     public void setObs(String obs) {
         this.obs = obs;
     }
+
+    public int getUsuarioid() {
+        return usuarioid;
+    }
+
+    public void setUsuarioid(int usuarioid) {
+        this.usuarioid = usuarioid;
+    }
+
+    public int getUsuarioidalteracao() {
+        return usuarioidalteracao;
+    }
+
+    public void setUsuarioidalteracao(int usuarioidalteracao) {
+        this.usuarioidalteracao = usuarioidalteracao;
+    }
+    
+    
 }

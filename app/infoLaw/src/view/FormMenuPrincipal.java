@@ -21,6 +21,8 @@ public class FormMenuPrincipal extends javax.swing.JFrame {
         miDivideContas = new javax.swing.JMenuItem();
         mRelatorios = new javax.swing.JMenu();
         miRelFinancas = new javax.swing.JMenuItem();
+        mUsuario = new javax.swing.JMenu();
+        miUsuario = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setExtendedState(6);
@@ -59,6 +61,18 @@ public class FormMenuPrincipal extends javax.swing.JFrame {
 
         mbMenuPrincipal.add(mRelatorios);
 
+        mUsuario.setText("Usuário");
+
+        miUsuario.setText("Cadastro de Usuário");
+        miUsuario.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                miUsuarioActionPerformed(evt);
+            }
+        });
+        mUsuario.add(miUsuario);
+
+        mbMenuPrincipal.add(mUsuario);
+
         setJMenuBar(mbMenuPrincipal);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -75,11 +89,16 @@ public class FormMenuPrincipal extends javax.swing.JFrame {
         pack();
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
+
+    private void miUsuarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_miUsuarioActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_miUsuarioActionPerformed
    
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JMenu mCadastros;
     private javax.swing.JMenu mConsultas;
     public javax.swing.JMenu mRelatorios;
+    private javax.swing.JMenu mUsuario;
     private javax.swing.JMenuBar mbMenuPrincipal;
     public javax.swing.JMenuItem miBaixaLancamento;
     public javax.swing.JMenuItem miCadEntidade;
@@ -88,5 +107,6 @@ public class FormMenuPrincipal extends javax.swing.JFrame {
     public javax.swing.JMenuItem miCancelaContas;
     public javax.swing.JMenuItem miDivideContas;
     public javax.swing.JMenuItem miRelFinancas;
+    public javax.swing.JMenuItem miUsuario;
     // End of variables declaration//GEN-END:variables
 }

@@ -11,6 +11,7 @@ import java.util.List;
 import model.Conta;
 import model.Entidade;
 import model.SubConta;
+import model.Usuario;
 
 public class ContaDao {
 
@@ -20,10 +21,17 @@ public class ContaDao {
     public boolean insert(Conta oConta, ArrayList<SubConta> parcelas) throws SQLException {
         try {
             conexao = Conexao.getConnection();
-            stmt = conexao.prepareStatement(
-                    "insert into conta (id, entidadeId, dataCriacao, valorTotal, status, obs) "
+            stmt = conexao.prepareStatement("insert into conta "
+                    + "(id, "
+                    + "entidadeId, "
+                    + "dataCriacao, "
+                    + "valorTotal, "
+                    + "status, "
+                    + "obs, "
+                    + "usuarioid, "
+                    + "usuarioidalteracao) "
                     + " values "
-                    + "  (?, ?, ?, ?, ?, ?)");
+                    + "  (?, ?, ?, ?, ?, ?, ?, ?)");
 
             stmt.setInt(1, oConta.getId());
             stmt.setInt(2, oConta.getEntidade().getId());
@@ -31,11 +39,12 @@ public class ContaDao {
             stmt.setDouble(4, oConta.getValorTotal());
             stmt.setInt(5, oConta.getStatus());
             stmt.setString(6, oConta.getObs());
+            stmt.setInt(7, Usuario.getInstance().getId());
+            stmt.setInt(8, Usuario.getInstance().getId());
             stmt.execute();
 
             return insertSubConta(parcelas);
         } catch (SQLException e) {
-
             return false;
         } finally {
             try {
@@ -50,12 +59,19 @@ public class ContaDao {
     private boolean insertSubConta(ArrayList<SubConta> parcelas) throws SQLException {
         try {
             conexao = Conexao.getConnection();
-
             for (int i = 0; i < parcelas.size(); i++) {
-                stmt = conexao.prepareStatement(
-                        "insert into subconta (contaID, sequencia, dataVencimento, dataPagamento, valorParcela, valorPago, situacao)"
+                stmt = conexao.prepareStatement("insert into subconta "
+                        + "(contaID, "
+                        + "sequencia, "
+                        + "dataVencimento, "
+                        + "dataPagamento, "
+                        + "valorParcela, "
+                        + "valorPago, "
+                        + "situacao,"
+                        + "usuarioid,"
+                        + "usuarioidalteracao)"
                         + " values "
-                        + "  (?, ?, ?, ?, ?, ?, ?)");
+                        + "  (?, ?, ?, ?, ?, ?, ?, ?, ?)");
 
                 stmt.setInt(1, parcelas.get(i).getConta().getId());
                 stmt.setInt(2, parcelas.get(i).getSequencia());
@@ -75,6 +91,8 @@ public class ContaDao {
                 }
 
                 stmt.setInt(7, parcelas.get(i).getSituacao());
+                stmt.setInt(8, Usuario.getInstance().getId());
+                stmt.setInt(9, Usuario.getInstance().getId());
                 stmt.execute();
             }
 
@@ -99,6 +117,221 @@ public class ContaDao {
         }
     }
 
+    //update
+    public boolean baixarSubConta(SubConta oSubConta) {
+        try {
+            conexao = Conexao.getConnection();
+            stmt = conexao.prepareStatement("update \n"
+                    + "    subConta \n"
+                    + "set \n"
+                    + "    valorPago = valorParcela, \n"
+                    + "    situacao = 1, \n"
+                    + "    dataPagamento = ?, \n"
+                    + "    usuarioidalteracao = ? \n"
+                    + "where \n"
+                    + "    contaID = ? \n"
+                    + "    and \n"
+                    + "    sequencia = ?");
+            stmt.setDate(1, new java.sql.Date(Date.from(Instant.now()).getTime()));
+            stmt.setInt(2, Usuario.getInstance().getId());
+            stmt.setInt(3, oSubConta.getConta().getId());
+            stmt.setInt(4, oSubConta.getSequencia());
+            stmt.execute();
+            return true;
+        } catch (SQLException e) {
+            return false;
+        } finally {
+            try {
+                stmt.close();
+                conexao.close();
+            } catch (SQLException ex) {
+
+            }
+        }
+    }
+
+    public boolean cancelaConta(int contaId) {
+        try {
+            conexao = Conexao.getConnection();
+            stmt = conexao.prepareStatement("update \n"
+                    + "  conta \n"
+                    + "set \n"
+                    + "  usuarioidalteracao = ? \n"
+                    + "where \n"
+                    + "  id = ? \n");
+
+            stmt.setInt(1, Usuario.getInstance().getId());
+            stmt.setInt(2, contaId);
+            stmt.execute();
+
+            stmt = conexao.prepareStatement("update \n"
+                    + "    subConta \n"
+                    + "set \n"
+                    + "    situacao = 2, \n"
+                    + "    usuarioidalteracao = ? \n"
+                    + "where \n"
+                    + "    contaID = ? \n");
+
+            stmt.setInt(1, Usuario.getInstance().getId());
+            stmt.setInt(2, contaId);
+            stmt.execute();
+
+            return true;
+        } catch (SQLException e) {
+            return false;
+        } finally {
+            try {
+                stmt.close();
+                conexao.close();
+            } catch (SQLException ex) {
+
+            }
+        }
+    }
+
+    public boolean cancelaParcela(int contaId, int sequencia) {
+        try {
+            conexao = Conexao.getConnection();
+            stmt = conexao.prepareStatement("update \n"
+                    + "  subConta \n"
+                    + "set \n"
+                    + "  situacao = 2 , \n"
+                    + "  usuarioidalteracao = ? \n"
+                    + "where \n"
+                    + "  contaID = ? \n"
+                    + "  and \n"
+                    + "  sequencia = ?");
+
+            stmt.setInt(1, Usuario.getInstance().getId());
+            stmt.setInt(2, contaId);
+            stmt.setInt(3, sequencia);
+            stmt.execute();
+
+            return true;
+        } catch (SQLException e) {
+            return false;
+        } finally {
+            try {
+                stmt.close();
+                conexao.close();
+            } catch (SQLException ex) {
+
+            }
+        }
+    }
+    
+    //Abaixo apenas gets        
+    public List<SubConta> buscaParcelasNaoDividas(int pagRec) {
+        try {
+            conexao = Conexao.getConnection();
+            stmt = conexao.prepareStatement("select \n"
+                    + "  subConta.*,\n"
+                    + "  conta.dataCriacao, \n"
+                    + "  entidade.nome \n"
+                    + "from \n"
+                    + "  subconta, conta, entidade\n"
+                    + "where \n"
+                    + "  subConta.contaID = conta.id\n"
+                    + "  and \n"
+                    + "  conta.entidadeID = entidade.id\n"
+                    + "  and \n"
+                    + "  conta.status = ? \n"
+                    + "  and \n"
+                    + "  subConta.repassado = 0 \n"
+                    + "  and \n"
+                    + "  subConta.situacao = 1 \n"
+                    + "order by \n"
+                    + "  subConta.dataPagamento desc");
+
+            stmt.setInt(1, pagRec);
+
+            ResultSet rs = stmt.executeQuery();
+            ArrayList<SubConta> parcelas = new ArrayList<>();
+
+            while (rs.next()) {
+                SubConta parcela = new SubConta();
+                Conta oConta = new Conta();
+                Entidade oEntidade = new Entidade();
+
+                oEntidade.setNome((rs.getString("nome")));
+
+                oConta.setId(rs.getInt("ContaId"));
+                oConta.setDataCriacao((rs.getDate("dataCriacao")));
+                oConta.setEntidade(oEntidade);
+
+                parcela.setConta(oConta);
+                parcela.setSequencia((rs.getInt("sequencia")));
+                parcela.setDataVencimento((rs.getDate("dataVencimento")));
+                parcela.setDataPagamento((rs.getDate("dataPagamento")));
+                parcela.setValorParcela((rs.getDouble("valorParcela")));
+                parcela.setSituacao((rs.getInt("situacao")));
+
+                parcelas.add(parcela);
+            }
+            return parcelas;
+        } catch (SQLException e) {
+            System.out.println(e.toString());
+            return null;
+        } finally {
+            try {
+                stmt.close();
+                conexao.close();
+            } catch (SQLException ex) {
+
+            }
+        }
+    }
+
+    public boolean divideParcela(int contaId, int sequencia) {
+        try {
+            conexao = Conexao.getConnection();
+            stmt = conexao.prepareStatement("update \n"
+                    + " subConta \n"
+                    + "set \n"
+                    + "  repassado = 1, \n"
+                    + "  usuarioidalteracao = ? \n"
+                    + "where \n"
+                    + "  contaID = ? \n"
+                    + "  and \n"
+                    + "  sequencia = ?");
+
+            stmt.setInt(1, Usuario.getInstance().getId());
+            stmt.setInt(2, contaId);
+            stmt.setInt(3, sequencia);
+            stmt.execute();
+            return true;
+        } catch (SQLException e) {
+            return false;
+        } finally {
+            try {
+                stmt.close();
+                conexao.close();
+            } catch (SQLException ex) {
+
+            }
+        }
+    }
+
+    public String getObsConta(int id) {
+        try {
+            conexao = Conexao.getConnection();
+            stmt = conexao.prepareStatement("select obs from conta where id = ?");
+            stmt.setInt(1, id);
+            ResultSet rs = stmt.executeQuery();
+            rs.next();
+            return rs.getString("obs");
+        } catch (SQLException e) {
+            return "";
+        } finally {
+            try {
+                stmt.close();
+                conexao.close();
+            } catch (SQLException ex) {
+
+            }
+        }
+    }
+
     public int getNextId() {
         try {
             conexao = Conexao.getConnection();
@@ -107,7 +340,7 @@ public class ContaDao {
             rs.next();
             return rs.getInt("codigo");
 
-        } catch (Exception e) {
+        } catch (SQLException e) {
             return 0;
         } finally {
             try {
@@ -153,7 +386,7 @@ public class ContaDao {
 
             ResultSet rs = stmt.executeQuery();
 
-            ArrayList<SubConta> contas = new ArrayList<SubConta>();
+            ArrayList<SubConta> contas = new ArrayList<>();
 
             while (rs.next()) {
                 Entidade oEnt = new Entidade();
@@ -175,7 +408,7 @@ public class ContaDao {
                 contas.add(oSub);
             }
             return contas;
-        } catch (Exception e) {
+        } catch (SQLException e) {
             return null;
         } finally {
             try {
@@ -224,7 +457,7 @@ public class ContaDao {
 
             ResultSet rs = stmt.executeQuery();
 
-            ArrayList<SubConta> contas = new ArrayList<SubConta>();
+            ArrayList<SubConta> contas = new ArrayList<>();
 
             while (rs.next()) {
                 Entidade oEnt = new Entidade();
@@ -246,7 +479,7 @@ public class ContaDao {
                 contas.add(oSub);
             }
             return contas;
-        } catch (Exception e) {
+        } catch (SQLException e) {
             return null;
         } finally {
             try {
@@ -291,7 +524,7 @@ public class ContaDao {
 
             ResultSet rs = stmt.executeQuery();
 
-            ArrayList<SubConta> contas = new ArrayList<SubConta>();
+            ArrayList<SubConta> contas = new ArrayList<>();
 
             while (rs.next()) {
                 Entidade oEnt = new Entidade();
@@ -313,7 +546,7 @@ public class ContaDao {
                 contas.add(oSub);
             }
             return contas;
-        } catch (Exception e) {
+        } catch (SQLException e) {
             return null;
         } finally {
             try {
@@ -361,7 +594,7 @@ public class ContaDao {
 
             ResultSet rs = stmt.executeQuery();
 
-            ArrayList<SubConta> contas = new ArrayList<SubConta>();
+            ArrayList<SubConta> contas = new ArrayList<>();
 
             while (rs.next()) {
                 Entidade oEnt = new Entidade();
@@ -383,7 +616,7 @@ public class ContaDao {
                 contas.add(oSub);
             }
             return contas;
-        } catch (Exception e) {
+        } catch (SQLException e) {
             return null;
         } finally {
             try {
@@ -427,7 +660,7 @@ public class ContaDao {
 
             ResultSet rs = stmt.executeQuery();
 
-            ArrayList<SubConta> contas = new ArrayList<SubConta>();
+            ArrayList<SubConta> contas = new ArrayList<>();
 
             while (rs.next()) {
                 Entidade oEnt = new Entidade();
@@ -449,39 +682,8 @@ public class ContaDao {
                 contas.add(oSub);
             }
             return contas;
-        } catch (Exception e) {
-            return null;
-        } finally {
-            try {
-                stmt.close();
-                conexao.close();
-            } catch (SQLException ex) {
-
-            }
-        }
-    }
-
-    public boolean baixarConta(SubConta oSubConta) {
-        try {
-            conexao = Conexao.getConnection();
-            stmt = conexao.prepareStatement("update \n"
-                    + "    subConta \n"
-                    + "set \n"
-                    + "    valorPago = valorParcela, \n"
-                    + "    situacao = 1, \n"
-                    + "    dataPagamento = ? \n"
-                    + "where \n"
-                    + "    contaID = ? \n"
-                    + "    and \n"
-                    + "    sequencia = ?");
-            stmt.setDate(1, new java.sql.Date(Date.from(Instant.now()).getTime()));
-            stmt.setInt(2, oSubConta.getConta().getId());
-            stmt.setInt(3, oSubConta.getSequencia());
-            stmt.execute();
-
-            return true;
         } catch (SQLException e) {
-            return false;
+            return null;
         } finally {
             try {
                 stmt.close();
@@ -513,7 +715,7 @@ public class ContaDao {
             stmt.setInt(1, pagRec);
 
             ResultSet rs = stmt.executeQuery();
-            ArrayList<Conta> contas = new ArrayList<Conta>();
+            ArrayList<Conta> contas = new ArrayList<>();
 
             while (rs.next()) {
                 Entidade oEnt = new Entidade();
@@ -527,7 +729,7 @@ public class ContaDao {
                 contas.add(oConta);
             }
             return contas;
-        } catch (Exception e) {
+        } catch (SQLException e) {
             return null;
         } finally {
             try {
@@ -559,7 +761,7 @@ public class ContaDao {
             stmt.setInt(1, contaId);
 
             ResultSet rs = stmt.executeQuery();
-            ArrayList<SubConta> parcelas = new ArrayList<SubConta>();
+            ArrayList<SubConta> parcelas = new ArrayList<>();
 
             while (rs.next()) {
                 SubConta parcela = new SubConta();
@@ -573,174 +775,9 @@ public class ContaDao {
                 parcelas.add(parcela);
             }
             return parcelas;
-        } catch (Exception e) {
+        } catch (SQLException e) {
             System.out.println(e.toString());
             return null;
-        } finally {
-            try {
-                stmt.close();
-                conexao.close();
-            } catch (SQLException ex) {
-
-            }
-        }
-    }
-
-    public boolean cancelaConta(int contaId) {
-        try {
-            conexao = Conexao.getConnection();
-            stmt = conexao.prepareStatement("update \n"
-                    + "    subConta \n"
-                    + "set \n"
-                    + "    situacao = 2 \n"
-                    + "where \n"
-                    + "    contaID = ? \n");
-
-            stmt.setInt(1, contaId);
-            stmt.execute();
-
-            return true;
-        } catch (SQLException e) {
-            return false;
-        } finally {
-            try {
-                stmt.close();
-                conexao.close();
-            } catch (SQLException ex) {
-
-            }
-        }
-    }
-
-    public boolean cancelaParcela(int contaId, int sequencia) {
-        try {
-            conexao = Conexao.getConnection();
-            stmt = conexao.prepareStatement("update \n"
-                    + "    subConta \n"
-                    + "set \n"
-                    + "  situacao = 2 \n"
-                    + "where \n"
-                    + "  contaID = ? \n"
-                    + "  and \n"
-                    + "  sequencia = ?");
-
-            stmt.setInt(1, contaId);
-            stmt.setInt(2, sequencia);
-            stmt.execute();
-
-            return true;
-        } catch (SQLException e) {
-            return false;
-        } finally {
-            try {
-                stmt.close();
-                conexao.close();
-            } catch (SQLException ex) {
-
-            }
-        }
-    }
-
-    public String getObsConta(int id) {
-        try {
-            conexao = Conexao.getConnection();
-            stmt = conexao.prepareStatement("select obs from conta where id = ?");
-            stmt.setInt(1, id);
-            ResultSet rs = stmt.executeQuery();
-            rs.next();
-            return rs.getString("obs");
-        } catch (Exception e) {
-            return "";
-        } finally {
-            try {
-                stmt.close();
-                conexao.close();
-            } catch (SQLException ex) {
-
-            }
-        }
-    }
-
-    public List<SubConta> buscaParcelasNaoDividas(int pagRec) {
-        try {
-            conexao = Conexao.getConnection();
-            stmt = conexao.prepareStatement("select \n"
-                    + "  subConta.*,\n"
-                    + "  conta.dataCriacao, \n"
-                    + "  entidade.nome \n"                    
-                    + "from \n"
-                    + "  subconta, conta, entidade\n"
-                    + "where \n"
-                    + "  subConta.contaID = conta.id\n"
-                    + "  and \n"
-                    + "  conta.entidadeID = entidade.id\n"
-                    + "  and \n"
-                    + "  conta.status = ? \n"
-                    + "  and \n"
-                    + "  subConta.repassado = 0 \n"
-                    + "  and \n"
-                    + "  subConta.situacao = 1 \n"
-                    + "order by \n"
-                    + "  subConta.dataPagamento desc");
-
-            stmt.setInt(1, pagRec);
-
-            ResultSet rs = stmt.executeQuery();
-            ArrayList<SubConta> parcelas = new ArrayList<SubConta>();
-
-            while (rs.next()) {
-                SubConta parcela = new SubConta();
-                Conta oConta = new Conta();
-                Entidade oEntidade = new Entidade();
-                
-                oEntidade.setNome((rs.getString("nome")));
-
-                oConta.setId(rs.getInt("ContaId"));
-                oConta.setDataCriacao((rs.getDate("dataCriacao")));
-                oConta.setEntidade(oEntidade);
-                
-                parcela.setConta(oConta);
-                parcela.setSequencia((rs.getInt("sequencia")));
-                parcela.setDataVencimento((rs.getDate("dataVencimento")));
-                parcela.setDataPagamento((rs.getDate("dataPagamento")));
-                parcela.setValorParcela((rs.getDouble("valorParcela")));
-                parcela.setSituacao((rs.getInt("situacao")));
-
-                parcelas.add(parcela);
-            }
-            return parcelas;
-        } catch (Exception e) {
-            System.out.println(e.toString());
-            return null;
-        } finally {
-            try {
-                stmt.close();
-                conexao.close();
-            } catch (SQLException ex) {
-
-            }
-        }
-    }
-
-    public boolean divideParcela(int contaId, int sequencia) {
-        try {
-            conexao = Conexao.getConnection();
-            stmt = conexao.prepareStatement("update \n"
-                    + "    subConta \n"
-                    + "set \n"
-                    + "  repassado = 1 \n"
-                    + "where \n"
-                    + "  contaID = ? \n"
-                    + "  and \n"
-                    + "  sequencia = ?");
-
-            stmt.setInt(1, contaId);
-            stmt.setInt(2, sequencia);
-            stmt.execute();
-
-            return true;
-        } catch (SQLException e) {
-            return false;
         } finally {
             try {
                 stmt.close();

@@ -4,7 +4,6 @@ import util.DateUtil;
 import dao.ContaDao;
 import dao.EntidadeDao;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.SQLException;
@@ -26,34 +25,34 @@ import view.model.EntidadeModel;
 
 public class ContaController {
 
-    private FormLancaConta frmLancaConta;
-    private ContaDao dao;
+    private final FormLancaConta frmLancaConta;
+    private final ContaDao dao;
 
-    Conta oConta;
+    private Conta conta;
     ArrayList<SubConta> parcelas;
 
-    private Entidade oEntidade;
-    private EntidadeDao entDao;
+    private Entidade entidade;
+    private final EntidadeDao entDao;
     private ArrayList<Entidade> entidades;
 
-    private FormConsultaEntidade frmConsEntidade;
-    private EntidadeModel entidadeModel;
+    private final FormConsultaEntidade frmConsEntidade;
+    private final EntidadeModel entidadeModel;
 
-    private DateUtil oUtil;
+    private final DateUtil dateUtil;
 
     public ContaController() {
         frmLancaConta = new FormLancaConta(null, true);
         frmConsEntidade = new FormConsultaEntidade(frmLancaConta, true);
 
-        oConta = new Conta();
+        conta = new Conta();
         parcelas = new ArrayList<>();
 
         dao = new ContaDao();
-        oEntidade = new Entidade();
+        entidade = new Entidade();
         entidadeModel = new EntidadeModel();
         entDao = new EntidadeDao();
 
-        oUtil = new DateUtil();
+        dateUtil = new DateUtil();
 
         inicializarComponente();
     }
@@ -80,6 +79,7 @@ public class ContaController {
         frmConsEntidade.tbEntidade.setModel(entidadeModel);
 
         frmConsEntidade.tbEntidade.addMouseListener(new MouseAdapter() {
+            @Override
             public void mousePressed(MouseEvent me) {
                 if (me.getClickCount() == 2) {
                     selecionaClienteId();
@@ -87,50 +87,32 @@ public class ContaController {
             }
         });
 
-        frmLancaConta.btnConsulta.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                consultar();
+        frmLancaConta.btnConsulta.addActionListener((ActionEvent e) -> {
+            consultar();
+        });
+
+        frmLancaConta.btnGeraParc.addActionListener((ActionEvent e) -> {
+            mostraParcelas();
+        });
+
+        frmLancaConta.btnGrava.addActionListener((ActionEvent e) -> {
+            try {
+                gravar();
+            } catch (SQLException ex) {
+                Logger.getLogger(ContaController.class.getName()).log(Level.SEVERE, null, ex);
             }
         });
 
-        frmLancaConta.btnGeraParc.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                mostraParcelas();
-            }
+        frmLancaConta.btnCancela.addActionListener((ActionEvent e) -> {
+            limparCampos();
         });
 
-        frmLancaConta.btnGrava.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                try {
-                    gravar();
-                } catch (SQLException ex) {
-                    Logger.getLogger(ContaController.class.getName()).log(Level.SEVERE, null, ex);
-                }
-            }
+        frmLancaConta.btnFecha.addActionListener((ActionEvent e) -> {
+            fechar();
         });
 
-        frmLancaConta.btnCancela.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                limparCampos();
-            }
-        });
-
-        frmLancaConta.btnFecha.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                fechar();
-            }
-        });
-
-        frmConsEntidade.btnFecha.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                fecharConsulta();
-            }
+        frmConsEntidade.btnFecha.addActionListener((ActionEvent e) -> {
+            fecharConsulta();
         });
     }
 
@@ -151,7 +133,7 @@ public class ContaController {
         frmLancaConta.cbCliente.setSelectedIndex(-1);
         frmLancaConta.rgReceber.setSelected(true);
         frmLancaConta.cbVista.setSelected(false);
-        frmLancaConta.edtData.setText(oUtil.getFormt().format(Date.from(Instant.now())));
+        frmLancaConta.edtData.setText(dateUtil.getFormt().format(Date.from(Instant.now())));
         frmLancaConta.edtQtdParc.setText("1");
         frmLancaConta.edtTotal.setText("0,00");
         frmLancaConta.txParcelas.setText(null);
@@ -162,9 +144,9 @@ public class ContaController {
         frmLancaConta.cbCliente.removeAllItems();
         entidades = (ArrayList<Entidade>) entDao.buscarTodos();
 
-        for (Entidade oEntidade : entidades) {
-            frmLancaConta.cbCliente.addItem(oEntidade.getNome());
-        }
+        entidades.forEach((entidade) -> {
+            frmLancaConta.cbCliente.addItem(entidade.getNome());
+        });
     }
 
     private void selecionaCliente() {
@@ -186,11 +168,11 @@ public class ContaController {
         int posicao = frmConsEntidade.tbEntidade.getSelectedRow();
 
         // buscar o objeto 
-        oEntidade = entidadeModel.getEntidade(posicao);
+        entidade = entidadeModel.getEntidade(posicao);
 
         // preencher os campos do form com os dados do objeto
-        frmLancaConta.edtCliente.setText(Integer.toString(oEntidade.getId()));
-        frmLancaConta.cbCliente.setSelectedItem(oEntidade.getNome());
+        frmLancaConta.edtCliente.setText(Integer.toString(entidade.getId()));
+        frmLancaConta.cbCliente.setSelectedItem(entidade.getNome());
 
         // fechar o formulário de consulta
         frmConsEntidade.setVisible(false);
@@ -215,37 +197,37 @@ public class ContaController {
 
         // Usar o DAO para buscar os objetos e adicionar no Table Model
         List<Entidade> todos = entDao.buscarTodos();
-        for (Entidade oEntidade : todos) {
-            entidadeModel.addEntidade(oEntidade);
-        }
+        todos.forEach((entidade) -> {
+            entidadeModel.addEntidade(entidade);
+        });
     }
 
     private void mostraParcelas() {
         gerarParcelas();
 
-        String parcelas = "";
+        String parcelasInfo;
 
-        parcelas = "Conta: " + this.oConta.getId() + "\n"
-                + "Cliente: " + this.oConta.getEntidade().getNome() + "\n"
-                + "Data Lançamento: " + oUtil.dateToString(this.oConta.getDataCriacao()) + "\n"
-                + "Valor Total: " + this.oConta.getValorTotal() + "\n\n";
+        parcelasInfo = "Conta: " + this.conta.getId() + "\n"
+                + "Cliente: " + this.conta.getEntidade().getNome() + "\n"
+                + "Data Lançamento: " + dateUtil.dateToString(this.conta.getDataCriacao()) + "\n"
+                + "Valor Total: " + this.conta.getValorTotal() + "\n\n";
 
         for (int i = 0; i < this.parcelas.size(); i++) {
-            parcelas = parcelas
+            parcelasInfo = parcelasInfo
                     + "    Parcela: " + this.parcelas.get(i).getSequencia() + "\n"
-                    + "    Data de Vencimento: " + oUtil.dateToString(this.parcelas.get(i).getDataVencimento()) + "\n"
-                    + "    Data de Pagamento: " + oUtil.dateToString(this.parcelas.get(i).getDataPagamento()) + "\n"
+                    + "    Data de Vencimento: " + dateUtil.dateToString(this.parcelas.get(i).getDataVencimento()) + "\n"
+                    + "    Data de Pagamento: " + dateUtil.dateToString(this.parcelas.get(i).getDataPagamento()) + "\n"
                     + "    Valor Parcela: " + this.parcelas.get(i).getValorParcela() + "\n"
                     + "    Valor Pago: " + this.parcelas.get(i).getValorPago() + "\n\n";
         }
-        frmLancaConta.txParcelas.setText(parcelas);
+        frmLancaConta.txParcelas.setText(parcelasInfo);
     }
 
     private void gravar() throws SQLException {
         if ((!frmLancaConta.txParcelas.getText().isEmpty()) && (this.parcelas.size() > 0)) {
-            this.oConta.setObs(frmLancaConta.txObs.getText());
+            this.conta.setObs(frmLancaConta.txObs.getText());
             
-            if (dao.insert(oConta, parcelas)) {
+            if (dao.insert(conta, parcelas)) {
                 JOptionPane.showMessageDialog(frmLancaConta, "Parcelas Gravadas com Sucesso");
                 limparCampos();
             } else {
@@ -266,41 +248,41 @@ public class ContaController {
     }
 
     private void gerarParcelas() {
-        this.oConta = new Conta();
+        this.conta = new Conta();
         this.parcelas = new ArrayList<>();
 
         int qtdParcelas = Integer.parseInt(frmLancaConta.edtQtdParc.getText());
 
-        this.oConta.setId(Integer.parseInt(String.valueOf(dao.getNextId())));
-        this.oConta.setEntidade(this.entidades.get(frmLancaConta.cbCliente.getSelectedIndex()));
-        this.oConta.setValorTotal(Double.parseDouble(frmLancaConta.edtTotal.getText()));
-        this.oConta.setDataCriacao(Date.from(Instant.now()));
-        this.oConta.setStatus(getStatus());        
+        this.conta.setId(Integer.parseInt(String.valueOf(dao.getNextId())));
+        this.conta.setEntidade(this.entidades.get(frmLancaConta.cbCliente.getSelectedIndex()));
+        this.conta.setValorTotal(Double.parseDouble(frmLancaConta.edtTotal.getText()));
+        this.conta.setDataCriacao(Date.from(Instant.now()));
+        this.conta.setStatus(getStatus());        
 
         if (validaCampos()) {
             if (frmLancaConta.cbVista.isSelected()) {
-                SubConta oSubConta = new SubConta();
-                oSubConta.setConta(oConta);
-                oSubConta.setSequencia(1);
-                oSubConta.setDataPagamento(oUtil.stringToDate(frmLancaConta.edtData.getText()));
-                oSubConta.setDataVencimento(oUtil.stringToDate(frmLancaConta.edtData.getText()));
-                oSubConta.setValorPago(oConta.getValorTotal());
-                oSubConta.setValorParcela(oConta.getValorTotal());
-                oSubConta.setSituacao(1);
-                this.parcelas.add(oSubConta);
+                SubConta subConta = new SubConta();
+                subConta.setConta(conta);
+                subConta.setSequencia(1);
+                subConta.setDataPagamento(dateUtil.stringToDate(frmLancaConta.edtData.getText()));
+                subConta.setDataVencimento(dateUtil.stringToDate(frmLancaConta.edtData.getText()));
+                subConta.setValorPago(conta.getValorTotal());
+                subConta.setValorParcela(conta.getValorTotal());
+                subConta.setSituacao(1);
+                this.parcelas.add(subConta);
             } else {
                 for (int i = 0; i < qtdParcelas; i++) {
                     SubConta oSubConta = new SubConta();
 
-                    oSubConta.setConta(oConta);
+                    oSubConta.setConta(conta);
                     oSubConta.setSequencia(i + 1);
-                    oSubConta.setValorParcela(oConta.getValorTotal() / qtdParcelas);
-                    oSubConta.setDataVencimento(oUtil.addMonth(oUtil.stringToDate(frmLancaConta.edtData.getText()), i));
+                    oSubConta.setValorParcela(conta.getValorTotal() / qtdParcelas);
+                    oSubConta.setDataVencimento(dateUtil.addMonth(dateUtil.stringToDate(frmLancaConta.edtData.getText()), i));
 
                     this.parcelas.add(oSubConta);
                 }
 
-                if (oUtil.dateToString(Date.from(Instant.now())).equals(frmLancaConta.edtData.getText())) {
+                if (dateUtil.dateToString(Date.from(Instant.now())).equals(frmLancaConta.edtData.getText())) {
                     int respota = JOptionPane.showConfirmDialog(frmLancaConta, "A Data de vencimento da primeira parcela é "
                             + "igual a data atual!\n"
                             + "Deseja gerar a primeira parcela paga?");
@@ -308,7 +290,7 @@ public class ContaController {
                     if (respota == 0) {
                         this.parcelas.get(0).setSituacao(1);
                         this.parcelas.get(0).setDataPagamento(Date.from(Instant.now()));
-                        this.parcelas.get(0).setValorPago(oConta.getValorTotal() / qtdParcelas);
+                        this.parcelas.get(0).setValorPago(conta.getValorTotal() / qtdParcelas);
                     }
                 }
             }
@@ -354,7 +336,7 @@ public class ContaController {
     private boolean validaTotal() {
         try {
             return Double.valueOf(frmLancaConta.edtTotal.getText()) > 0;
-        } catch (Exception e) {
+        } catch (NumberFormatException e) {
             return false;
         }
     }
@@ -362,14 +344,14 @@ public class ContaController {
     private boolean validaParcelas() {
         try {
             return Integer.valueOf(frmLancaConta.edtQtdParc.getText()) > 0;
-        } catch (Exception e) {
+        } catch (NumberFormatException e) {
             return false;
         }
     }
 
     private boolean validaData() {
         try {
-            return oUtil.validaData(frmLancaConta.edtData.getText());
+            return dateUtil.validaData(frmLancaConta.edtData.getText());
         } catch (Exception e) {
             return false;
         }

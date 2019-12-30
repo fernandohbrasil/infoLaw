@@ -3,7 +3,6 @@ package controller;
 import util.DateUtil;
 import dao.ContaDao;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
@@ -17,18 +16,18 @@ import view.model.ParcelaContaModel;
 
 public class CancelaContasController {
 
-    private FormCancelaConta frmCancelaConta;
-    private ContaDao dao;
+    private final FormCancelaConta frmCancelaConta;
+    private final ContaDao dao;
 
-    ArrayList<SubConta> parcelas;
+    private ArrayList<SubConta> parcelas;
 
-    private ContaModel contaModel;
-    private ParcelaContaModel subContaModel;
+    private final ContaModel contaModel;
+    private final ParcelaContaModel subContaModel;
 
-    private DateUtil oUtil;
+    private final DateUtil oUtil;
 
     public CancelaContasController() {
-        frmCancelaConta = new FormCancelaConta(frmCancelaConta, true);
+        frmCancelaConta = new FormCancelaConta(null, true);
 
         contaModel = new ContaModel();
         subContaModel = new ParcelaContaModel();
@@ -40,38 +39,25 @@ public class CancelaContasController {
     }
 
     private void inicializarComponente() {
-        frmCancelaConta.btnCancelaContas.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-
-            }
+        frmCancelaConta.btnCancelaContas.addActionListener((ActionEvent e) -> {
         });
 
-        frmCancelaConta.btnCancelaParc.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-
-            }
+        frmCancelaConta.btnCancelaParc.addActionListener((ActionEvent e) -> {
         });
 
-        frmCancelaConta.btnFecha.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                fechar();
-            }
+        frmCancelaConta.btnFecha.addActionListener((ActionEvent e) -> {
+            fechar();
         });
 
         frmCancelaConta.tbContas.setModel(contaModel);
         frmCancelaConta.tbParcelas.setModel(subContaModel);
 
-        frmCancelaConta.btnFiltrar.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                filtrarContas();
-            }
+        frmCancelaConta.btnFiltrar.addActionListener((ActionEvent e) -> {
+            filtrarContas();
         });
 
         frmCancelaConta.tbContas.addMouseListener(new MouseAdapter() {
+            @Override
             public void mousePressed(MouseEvent me) {
                 if (me.getClickCount() == 2) {
                     filtrarParcelas();
@@ -79,18 +65,12 @@ public class CancelaContasController {
             }
         });
 
-        frmCancelaConta.btnCancelaContas.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                cancelaConta();
-            }
+        frmCancelaConta.btnCancelaContas.addActionListener((ActionEvent e) -> {
+            cancelaConta();
         });
 
-        frmCancelaConta.btnCancelaParc.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                cancelaParcela();
-            }
+        frmCancelaConta.btnCancelaParc.addActionListener((ActionEvent e) -> {
+            cancelaParcela();
         });
     }
 
@@ -105,7 +85,7 @@ public class CancelaContasController {
 
         contaModel.limpar();
         contaModel.fireTableDataChanged();
-        
+
         frmCancelaConta.rgReceber.setSelected(true);
     }
 
@@ -116,26 +96,26 @@ public class CancelaContasController {
     }
 
     private void filtrarContas() {
-        List<Conta> todos = null;
+        List<Conta> todos;
 
         todos = dao.buscaContas(getPagaRecebe());
 
         contaModel.limpar();
-        for (Conta oConta : todos) {
+        todos.forEach((oConta) -> {
             contaModel.addConta(oConta);
-        }
+        });
         contaModel.fireTableDataChanged();
     }
 
     private void filtrarParcelas() {
-        List<SubConta> todos = null;
+        List<SubConta> todos;
 
         todos = dao.buscaParcelas(contaModel.getConta(frmCancelaConta.tbContas.getSelectedRow()).getId());
 
         subContaModel.limpar();
-        for (SubConta oSubConta : todos) {
+        todos.forEach((oSubConta) -> {
             subContaModel.addSubConta(oSubConta);
-        }
+        });
         subContaModel.fireTableDataChanged();
     }
 
@@ -148,7 +128,7 @@ public class CancelaContasController {
     }
 
     private void cancelaConta() {
-        int contaId = 0;
+        int contaId;
 
         contaId = contaModel.getConta(frmCancelaConta.tbContas.getSelectedRow()).getId();
 
@@ -164,14 +144,15 @@ public class CancelaContasController {
     }
 
     private void cancelaParcela() {
-        int contaId = 0;
-        int sequencia = 0;
+        int contaId;
+        int sequencia;
 
         contaId = contaModel.getConta(frmCancelaConta.tbContas.getSelectedRow()).getId();
         sequencia = subContaModel.getSubConta(frmCancelaConta.tbParcelas.getSelectedRow()).getSequencia();
 
         if ((contaId > 0) && (sequencia > 0)) {
-            int respota = JOptionPane.showConfirmDialog(frmCancelaConta, "Você está prestes a parcela selcionada! \n"
+            int respota = JOptionPane.showConfirmDialog(frmCancelaConta,
+                    "Você está prestes cancelar a parcela selcionada! \n"
                     + "Confirma o procedimento?");
             if (respota == 0) {
                 dao.cancelaParcela(contaId, sequencia);

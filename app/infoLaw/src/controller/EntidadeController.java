@@ -3,7 +3,6 @@ package controller;
 import dao.EntidadeDao;
 import dao.MunicipioDao;
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
@@ -22,12 +21,11 @@ import view.model.EntidadeModel;
 
 public class EntidadeController {
 
-    private FormCadastroEntidade frmCadEntidade;
-    private Entidade oEntidade;
-    private EntidadeDao dao;
-    private MunicipioDao munDao;
-    private EntidadeModel entidadeModel;
-    private FormConsultaEntidade frmConsEntidade;
+    private final FormCadastroEntidade frmCadEntidade;
+    private final EntidadeDao dao;
+    private final MunicipioDao munDao;
+    private final EntidadeModel entidadeModel;
+    private final FormConsultaEntidade frmConsEntidade;
 
     public EntidadeController() {
         frmCadEntidade = new FormCadastroEntidade(null, true);
@@ -35,59 +33,44 @@ public class EntidadeController {
 
         dao = new EntidadeDao();
         munDao = new MunicipioDao();
-        oEntidade = new Entidade();
         entidadeModel = new EntidadeModel();
 
         inicializarComponente();
     }
 
     private void inicializarComponente() {
-        frmCadEntidade.btnGrava.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                try {
-                    gravar();
-                } catch (SQLException ex) {
-                    Logger.getLogger(MunicipioController.class.getName()).log(Level.SEVERE, null, ex);
-                }
+        frmCadEntidade.btnGrava.addActionListener((ActionEvent e) -> {
+            try {
+                gravar();
+            } catch (SQLException ex) {
+                Logger.getLogger(MunicipioController.class.getName()).log(Level.SEVERE, null, ex);
             }
         });
 
-        frmCadEntidade.btnCancela.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                cancelar();
-            }
+        frmCadEntidade.btnCancela.addActionListener((ActionEvent e) -> {
+            cancelar();
         });
 
-        frmCadEntidade.btnFecha.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                fechar();
-            }
+        frmCadEntidade.btnFecha.addActionListener((ActionEvent e) -> {
+            fechar();
         });
 
         frmCadEntidade.addWindowListener(new WindowAdapter() {
+            @Override
             public void windowClosing(WindowEvent evt) {
                 fechar();
             }
         });
 
-        frmCadEntidade.btnConsulta.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                consultar();
-            }
+        frmCadEntidade.btnConsulta.addActionListener((ActionEvent e) -> {
+            consultar();
         });
 
         // Vincular o Table Model com a jTable
         frmConsEntidade.tbEntidade.setModel(entidadeModel);
 
         frmConsEntidade.tbEntidade.addMouseListener(new MouseAdapter() {
+            @Override
             public void mousePressed(MouseEvent me) {
                 if (me.getClickCount() == 2) {
                     editarEntidade();
@@ -95,49 +78,31 @@ public class EntidadeController {
             }
         });
 
-        frmCadEntidade.btnExclui.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                excluir();
-            }
+        frmCadEntidade.btnExclui.addActionListener((ActionEvent e) -> {
+            excluir();
         });
 
-        frmCadEntidade.cbUF.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                selecionaUf((String) frmCadEntidade.cbUF.getSelectedItem());
-            }
+        frmCadEntidade.cbUF.addActionListener((ActionEvent e) -> {
+            selecionaUf((String) frmCadEntidade.cbUF.getSelectedItem());
         });
 
-        frmCadEntidade.rgJuridica.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                tipoPessoa(false);
-            }
+        frmCadEntidade.rgJuridica.addActionListener((ActionEvent e) -> {
+            tipoPessoa(false);
         });
 
-        frmCadEntidade.rgFisica.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                tipoPessoa(true);
-            }
+        frmCadEntidade.rgFisica.addActionListener((ActionEvent e) -> {
+            tipoPessoa(true);
         });
-        
-        frmConsEntidade.btnFecha.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                fecharConsulta();
-            }
+
+        frmConsEntidade.btnFecha.addActionListener((ActionEvent e) -> {
+            fecharConsulta();
         });
 
     }
-    
+
     private void fecharConsulta() {
         frmConsEntidade.setVisible(false);
-        
+
         frmCadEntidade.setVisible(true);
     }
 
@@ -163,9 +128,9 @@ public class EntidadeController {
 
         // Usar o DAO para buscar os objetos e adicionar no Table Model
         List<Entidade> todos = dao.buscarTodos();
-        for (Entidade oEntidade : todos) {
+        todos.forEach((oEntidade) -> {
             entidadeModel.addEntidade(oEntidade);
-        }
+        });
     }
 
     public void cadastrarEntidade() {
@@ -211,15 +176,13 @@ public class EntidadeController {
         String rg = frmCadEntidade.edtRg.getText();
         String cnpj = frmCadEntidade.edtCnpj.getText();
         String ie = frmCadEntidade.edtIe.getText();
-
-        int codigo = 0;
+        int codigo;
 
         if (frmCadEntidade.edtCodigo.getText().isEmpty()) {
             codigo = dao.getNextId();
         } else {
             codigo = Integer.parseInt(frmCadEntidade.edtCodigo.getText());
         }
-        //Seto os dados do objeto por meio do construtor    
         return new Entidade(codigo, nome, telefone, email, oMunicipio, cep, bairro, rua, numero, cpf, rg, cnpj, ie);
     }
 
@@ -246,9 +209,9 @@ public class EntidadeController {
         frmCadEntidade.cbMunicipio.removeAllItems();
         ArrayList<Municipio> municipios = (ArrayList<Municipio>) munDao.findByUf(uf);
 
-        for (Municipio oMunicipio : municipios) {
+        municipios.forEach((oMunicipio) -> {
             frmCadEntidade.cbMunicipio.addItem(oMunicipio.getNome());
-        }
+        });
     }
 
     private void tipoPessoa(Boolean pessoaFisica) {
@@ -292,23 +255,23 @@ public class EntidadeController {
         int posicao = frmConsEntidade.tbEntidade.getSelectedRow();
 
         // buscar o objeto 
-        oEntidade = entidadeModel.getEntidade(posicao);
+        Entidade entidade = entidadeModel.getEntidade(posicao);
 
         // preencher os campos do form com os dados do objeto
-        frmCadEntidade.edtCodigo.setText(Integer.toString(oEntidade.getId()));
-        frmCadEntidade.edtNome.setText(oEntidade.getNome());
-        frmCadEntidade.edtFone.setText(oEntidade.getTelefone());
-        frmCadEntidade.edtEmail.setText(oEntidade.getEmail());
-        frmCadEntidade.cbUF.setSelectedIndex(getIndexUf(oEntidade.getMunicipio().getUf()));
-        frmCadEntidade.cbMunicipio. setSelectedItem(oEntidade.getMunicipio().getNome());        
-        frmCadEntidade.edtCep.setText(oEntidade.getCep());
-        frmCadEntidade.edtBairro.setText(oEntidade.getBairro());
-        frmCadEntidade.edtRua.setText(oEntidade.getRua());
-        frmCadEntidade.edtNumero.setText(oEntidade.getNumero());
-        frmCadEntidade.edtCpf.setText(oEntidade.getCpf());
-        frmCadEntidade.edtRg.setText(oEntidade.getRg());
-        frmCadEntidade.edtCnpj.setText(oEntidade.getCnpj());
-        frmCadEntidade.edtIe.setText(oEntidade.getIe());
+        frmCadEntidade.edtCodigo.setText(Integer.toString(entidade.getId()));
+        frmCadEntidade.edtNome.setText(entidade.getNome());
+        frmCadEntidade.edtFone.setText(entidade.getTelefone());
+        frmCadEntidade.edtEmail.setText(entidade.getEmail());
+        frmCadEntidade.cbUF.setSelectedIndex(getIndexUf(entidade.getMunicipio().getUf()));
+        frmCadEntidade.cbMunicipio.setSelectedItem(entidade.getMunicipio().getNome());
+        frmCadEntidade.edtCep.setText(entidade.getCep());
+        frmCadEntidade.edtBairro.setText(entidade.getBairro());
+        frmCadEntidade.edtRua.setText(entidade.getRua());
+        frmCadEntidade.edtNumero.setText(entidade.getNumero());
+        frmCadEntidade.edtCpf.setText(entidade.getCpf());
+        frmCadEntidade.edtRg.setText(entidade.getRg());
+        frmCadEntidade.edtCnpj.setText(entidade.getCnpj());
+        frmCadEntidade.edtIe.setText(entidade.getIe());
 
         // fechar o formulário de consulta
         frmConsEntidade.setVisible(false);

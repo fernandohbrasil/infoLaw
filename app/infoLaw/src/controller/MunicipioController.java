@@ -19,60 +19,46 @@ import view.model.MunicipioModel;
 
 public class MunicipioController {
 
-    private FormCadastroMunicipio frmCadMunipio;
-    private Municipio oMunicipio;
-    private MunicipioDao dao;
-    private MunicipioModel municipioModel;
-    private FormConsultaMunicipio frmConsMunicipio;
+    private final FormCadastroMunicipio frmCadMunipio;    
+    private final MunicipioDao dao;
+    private final MunicipioModel municipioModel;
+    private final FormConsultaMunicipio frmConsMunicipio;
 
     MunicipioController() {
         frmCadMunipio = new FormCadastroMunicipio(null, true);
         frmConsMunicipio = new FormConsultaMunicipio(frmCadMunipio, true);
-        dao = new MunicipioDao();
-        oMunicipio = new Municipio();
+        dao = new MunicipioDao();        
         municipioModel = new MunicipioModel();
         inicializarComponente();
     }
 
     private void inicializarComponente() {
-        frmCadMunipio.btnGrava.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                try {
-                    gravarMunicipio();
-                } catch (SQLException ex) {
-                    Logger.getLogger(MunicipioController.class.getName()).log(Level.SEVERE, null, ex);
-                }
+        frmCadMunipio.btnGrava.addActionListener((ActionEvent e) -> {
+            try {
+                gravarMunicipio();
+            } catch (SQLException ex) {
+                Logger.getLogger(MunicipioController.class.getName()).log(Level.SEVERE, null, ex);
             }
         });
 
-        frmCadMunipio.btnCancela.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                cancelar();
-            }
+        frmCadMunipio.btnCancela.addActionListener((ActionEvent e) -> {
+            cancelar();
         });
 
         frmCadMunipio.addWindowListener(new WindowAdapter() {
+            @Override
             public void windowClosing(WindowEvent evt) {
                 fechar();
             }
         });
 
-        frmCadMunipio.btnConsulta.addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                consultarMunicipio();
-            }
+        frmCadMunipio.btnConsulta.addActionListener((ActionEvent e) -> {
+            consultarMunicipio();
         });
-
-        // Vincular o Table Model com a jTable
+        
         frmConsMunicipio.tbEntidade.setModel(municipioModel);
-
         frmConsMunicipio.tbEntidade.addMouseListener(new MouseAdapter() {
+            @Override
             public void mousePressed(MouseEvent me) {
                 if (me.getClickCount() == 2) {
                     editarMunicipio();
@@ -113,19 +99,15 @@ public class MunicipioController {
 
     private void carregarMunicipios() {
         municipioModel.limpar();
-
-        // Usar o DAO para buscar os objetos e adicionar no Table Model
+        
         List<Municipio> todos = dao.buscarTodos();
-        for (Municipio oMunicipio : todos) {
+        todos.forEach((oMunicipio) -> {
             municipioModel.addMunicipio(oMunicipio);
-        }
+        });
     }
 
     public void cadastrarMunicipio() {
-        //Inicializando Campos vazios
-        limparCampos();
-
-        //Mostrando a tela 
+        limparCampos();       
         frmCadMunipio.setVisible(true);
     }
 
@@ -158,7 +140,7 @@ public class MunicipioController {
         String nome = frmCadMunipio.edtNome.getText();
         String cep = frmCadMunipio.edtCEP.getText();
         String uf = getUF(frmCadMunipio.cbUF.getSelectedIndex());
-        int codigo = 0;
+        int codigo;
 
         //Se Código vazio, significa que é objeto novo, então, busco Id
         //Se Código diferente de vazio, então, é um objeto existente
@@ -192,13 +174,13 @@ public class MunicipioController {
         int posicao = frmConsMunicipio.tbEntidade.getSelectedRow();
 
         // buscar o objeto 
-        oMunicipio = municipioModel.getMunicipio(posicao);
+        Municipio municipio = municipioModel.getMunicipio(posicao);
 
         // preencher os campos do form com os dados do objeto
-        frmCadMunipio.edtCodigo.setText(Integer.toString(oMunicipio.getId()));
-        frmCadMunipio.edtNome.setText(oMunicipio.getNome());
-        frmCadMunipio.cbUF.setSelectedIndex(getIndexUf(oMunicipio.getUf()));
-        frmCadMunipio.edtCEP.setText(oMunicipio.getCep());
+        frmCadMunipio.edtCodigo.setText(Integer.toString(municipio.getId()));
+        frmCadMunipio.edtNome.setText(municipio.getNome());
+        frmCadMunipio.cbUF.setSelectedIndex(getIndexUf(municipio.getUf()));
+        frmCadMunipio.edtCEP.setText(municipio.getCep());
 
         // fechar o formulário de consulta
         frmConsMunicipio.setVisible(false);

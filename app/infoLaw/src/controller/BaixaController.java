@@ -1,12 +1,12 @@
 package controller;
 
-import util.DateUtil;
 import dao.ContaDao;
 import dao.EntidadeDao;
 import java.awt.event.ActionEvent;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -16,6 +16,8 @@ import javax.swing.event.PopupMenuEvent;
 import javax.swing.event.PopupMenuListener;
 import model.Entidade;
 import model.SubConta;
+import util.CurrencyUtil;
+import util.DateUtil;
 import view.FormBaixaConta;
 import view.consulta.FormConsultaEntidade;
 import view.model.SubContaModel;
@@ -34,9 +36,7 @@ public class BaixaController {
 
     private final FormConsultaEntidade frmConsEntidade;
     private final SubContaModel contaModel;
-
-    private final DateUtil oUtil;
-
+  
     public BaixaController() {
         frmBaixaConta = new FormBaixaConta(frmBaixaConta, true);
         frmConsEntidade = new FormConsultaEntidade(frmBaixaConta, true);
@@ -46,8 +46,6 @@ public class BaixaController {
         dao = new ContaDao();
         entidadeModel = new EntidadeModel();
         entDao = new EntidadeDao();
-
-        oUtil = new DateUtil();
 
         inicializarComponente();
     }
@@ -72,7 +70,6 @@ public class BaixaController {
 
         // Vincular o Table Model com a jTable
         frmConsEntidade.tbEntidade.setModel(entidadeModel);
-
         frmConsEntidade.tbEntidade.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent me) {
@@ -107,6 +104,30 @@ public class BaixaController {
         frmBaixaConta.tbLancamentos.getSelectionModel().addListSelectionListener((ListSelectionEvent e) -> {
             buscarObs();
         });
+        
+        frmBaixaConta.edtDtIni.addFocusListener(new FocusListener() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                frmBaixaConta.edtDtIni.selectAll();
+            }
+
+            @Override
+            public void focusLost(FocusEvent e) {
+           
+            }
+        });
+        
+        frmBaixaConta.edtDtFin.addFocusListener(new FocusListener() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                frmBaixaConta.edtDtFin.selectAll();
+            }
+
+            @Override
+            public void focusLost(FocusEvent e) {
+           
+            }
+        });
     }
 
     private void fecharConsulta() {
@@ -121,7 +142,7 @@ public class BaixaController {
 
     private void limparCampos() {
         //Limpando todos os campos da tela
-        frmBaixaConta.lblResultado.setText("Total Demonstrado: 0.0 ");
+        frmBaixaConta.lblResultado.setText("Total Demonstrado: R$ 0,00 ");
         frmBaixaConta.lblQtdParc.setText("Quantidade de Parcelas: 0 ");
 
         frmBaixaConta.txObs.setText("Observação: ");
@@ -131,10 +152,9 @@ public class BaixaController {
         frmBaixaConta.rgDtVenc.setSelected(true);
         frmBaixaConta.cbxEntidade.setSelectedIndex(-1);
         frmBaixaConta.edtCliente.setText(null);
-        frmBaixaConta.edtDtIni.setText(oUtil.getFormt().format(Date.from(Instant.now())));
-        frmBaixaConta.edtDtFin.setText(oUtil.getFormt().format(Date.from(Instant.now())));
-        //frmBaixaConta.edtDtFin.setText(oUtil.lastDayOfMonth() + "/" + oUtil.monthNow() + "/" + oUtil.yearNow());
-
+        frmBaixaConta.edtDtIni.setText(DateUtil.fullDateNow());
+        frmBaixaConta.edtDtFin.setText(DateUtil.fullDateNow());
+        
         contaModel.limpar();
         contaModel.fireTableDataChanged();
     }
@@ -205,33 +225,35 @@ public class BaixaController {
         if (frmBaixaConta.tbLancamentos.getSelectedRow() >= 0) {
             frmBaixaConta.txObs.setText(dao.getObsConta(contaModel.getSubConta(frmBaixaConta.tbLancamentos.getSelectedRow()).getConta().getId()));
         }
+    }
+        
+    private List<SubConta> porData(){        
+            if (validaData()) {
+                Date ini = DateUtil.stringToDate(frmBaixaConta.edtDtIni.getText());
+                Date fin = DateUtil.stringToDate(frmBaixaConta.edtDtFin.getText());
 
+                if (frmBaixaConta.rgDtVenc.isSelected()) {
+                    //vencimento                    
+                    return dao.buscaDataVencimento(ini, fin, getStatus());
+                } else {
+                    //pagamento                    
+                    return dao.buscaDataPagamento(ini, fin, getStatus());
+                }
+            } else {
+                JOptionPane.showMessageDialog(frmBaixaConta, "Data Inicial ou Final inválida!");
+                return null;
+            }
     }
 
     private void filtrar() {
         List<SubConta> todos = null;
         if (frmBaixaConta.cbData.isSelected() && (!frmBaixaConta.cbEntidade.isSelected())) {
-            //por data sem cliente
-            if (validaData()) {
-                Date ini = oUtil.stringToDate(frmBaixaConta.edtDtIni.getText());
-                Date fin = oUtil.stringToDate(frmBaixaConta.edtDtFin.getText());
-
-                if (frmBaixaConta.rgDtVenc.isSelected()) {
-                    //vencimento                    
-                    todos = dao.buscaDataVencimento(ini, fin, getStatus());
-                } else {
-                    //pagamento                    
-                    todos = dao.buscaDataPagamento(ini, fin, getStatus());
-                }
-            } else {
-                JOptionPane.showMessageDialog(frmBaixaConta, "Data Inicial ou Final inválida!");
-            }
-
+            todos = porData();            
         } else if (frmBaixaConta.cbData.isSelected() && (frmBaixaConta.cbEntidade.isSelected())) {
             //por data com cliente
             if (validaData()) {
-                Date ini = oUtil.stringToDate(frmBaixaConta.edtDtIni.getText());
-                Date fin = oUtil.stringToDate(frmBaixaConta.edtDtFin.getText());
+                Date ini = DateUtil.stringToDate(frmBaixaConta.edtDtIni.getText());
+                Date fin = DateUtil.stringToDate(frmBaixaConta.edtDtFin.getText());
                 int entidadeId = Integer.parseInt(frmBaixaConta.edtCliente.getText());
 
                 if (frmBaixaConta.rgDtVenc.isSelected()) {
@@ -267,7 +289,7 @@ public class BaixaController {
                 contaModel.addSubConta(subconta);
             }
 
-            frmBaixaConta.lblResultado.setText("Total Demonstrado: " + total);
+            frmBaixaConta.lblResultado.setText("Total Demonstrado: R$ " + CurrencyUtil.getFormatCurrency(total));
             frmBaixaConta.lblQtdParc.setText("Quantidade de Parcelas: " + todos.size());
         }
 
@@ -285,8 +307,8 @@ public class BaixaController {
     private boolean validaData() {
         boolean validou;
 
-        validou = oUtil.validaData(frmBaixaConta.edtDtIni.getText());
-        return validou == oUtil.validaData(frmBaixaConta.edtDtFin.getText());
+        validou = DateUtil.validaData(frmBaixaConta.edtDtIni.getText());
+        return validou == DateUtil.validaData(frmBaixaConta.edtDtFin.getText());
     }
 
     private void baixarParcela() {

@@ -10,76 +10,68 @@ import javax.swing.JOptionPane;
 
 public class DateUtil {
 
-    public SimpleDateFormat formt;
-    private final SimpleDateFormat dataFull;
-    private final SimpleDateFormat dayFormat;
-    private final SimpleDateFormat monthFormat;
-    private final SimpleDateFormat yearFormat;
+    private static final SimpleDateFormat date = new SimpleDateFormat("dd/MM/yyyy");    
+    private static final SimpleDateFormat dataFull = new SimpleDateFormat("EEEE, d' de 'MMMM' de 'yyyy");
+    private static final SimpleDateFormat dayFormat = new SimpleDateFormat("dd");
+    private static final SimpleDateFormat monthFormat = new SimpleDateFormat("MM");
+    private static final SimpleDateFormat yearFormat = new SimpleDateFormat("yyyy");
 
-    public DateUtil() {
-        formt = new SimpleDateFormat("dd/MM/yyyy");
-        dataFull = new SimpleDateFormat("EEEE, d' de 'MMMM' de 'yyyy");
-        dayFormat = new SimpleDateFormat("dd");
-        monthFormat = new SimpleDateFormat("MM");
-        yearFormat = new SimpleDateFormat("yyyy");
-    }
-
-    public SimpleDateFormat getDayFormat() {
+    public static SimpleDateFormat getDayFormat() {
         return dayFormat;
     }
 
-    public SimpleDateFormat getMonthFormat() {
+    public static SimpleDateFormat getMonthFormat() {
         return monthFormat;
     }
 
-    public SimpleDateFormat getYearFormat() {
+    public static SimpleDateFormat getYearFormat() {
         return yearFormat;
     }
 
-    public SimpleDateFormat getFormt() {
-        return formt;
+    public static SimpleDateFormat getDate() {
+        return date;
     }
 
-    public String dateToString(Date aData) {
+    public static String dateToString(Date aData) {
         try {
-            return formt.format(aData);
-        } catch (Exception e) {            
+            return date.format(aData);
+        } catch (Exception e) {
             return "";
         }
     }
 
-    public Date stringToDate(String aData) {
+    public static Date stringToDate(String aData) {
         try {
-            return formt.parse(aData);
+            return date.parse(aData);
         } catch (ParseException e) {
             JOptionPane.showMessageDialog(null, msgData());
             return Date.from(Instant.now());
         }
     }
 
-    public Date stringToDateFull(String aData) {
+    public static Date stringToDateFull(String aData) {
         try {
-            return formt.parse(aData);
+            return date.parse(aData);
         } catch (ParseException e) {
             JOptionPane.showMessageDialog(null, msgData());
             return Date.from(Instant.now());
         }
     }
 
-    public boolean validaData(String oData) {
+    public static boolean validaData(String oData) {
         boolean valida = false;
 
         try {
             valida = true;
-            formt.setLenient(false);
-            Date data = formt.parse(oData);
+            date.setLenient(false);
+            Date data = date.parse(oData);
         } catch (ParseException e) {
             JOptionPane.showMessageDialog(null, msgData());
         }
         return valida;
     }
 
-    public Date addMonth(Date oData, int add) {
+    public static Date addMonth(Date oData, int add) {
         try {
             Calendar cal = Calendar.getInstance();
             cal.setTime(oData);
@@ -90,11 +82,11 @@ public class DateUtil {
         }
     }
 
-    private String msgData() {
+    private static String msgData() {
         return "Data Inválida";
     }
 
-    public String lastDayOfMonth() {
+    public static String lastDayOfMonth() {
         try {
             GregorianCalendar dataCal = new GregorianCalendar();
             int mes = dataCal.get(Calendar.MONTH);
@@ -108,7 +100,7 @@ public class DateUtil {
         }
     }
 
-    public String monthNow() {
+    public  static String monthNow() {
         try {
             return monthFormat.format(Date.from(Instant.now()));
         } catch (Exception e) {
@@ -117,9 +109,18 @@ public class DateUtil {
         }
     }
 
-    public String yearNow() {
+    public  static String yearNow() {
         try {
             return yearFormat.format(Date.from(Instant.now()));
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, msgData());
+            return "";
+        }
+    }
+    
+     public  static String fullDateNow() {
+        try {
+            return date.format(Date.from(Instant.now()));
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null, msgData());
             return "";

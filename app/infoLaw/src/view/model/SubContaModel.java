@@ -7,8 +7,8 @@ import util.DateUtil;
 
 public class SubContaModel extends AbstractTableModel {
 
-    private ArrayList<SubConta> subContas = new ArrayList<SubConta>();
-    private DateUtil oUtil = new DateUtil();
+    private final ArrayList<SubConta> subContas = new ArrayList<>();
+    private final DateUtil util = new DateUtil();
 
     @Override
     public int getRowCount() {
@@ -27,39 +27,41 @@ public class SubContaModel extends AbstractTableModel {
 
         // Segundo, recuperar o atributo do objeto a ser 
         // mostrado naquela coluna
-        if (columnIndex == 0) {
-            return oSubConta.getConta().getId();
-        } else if (columnIndex == 1) {
-            return oSubConta.getSequencia();
-        } else if (columnIndex == 2) {
-            return oSubConta.getConta().getEntidade().getNome();
-        } else if (columnIndex == 3) {
-            return oSubConta.getValorParcela();
-        } else if (columnIndex == 4) {
-            return oUtil.dateToString(oSubConta.getDataVencimento());
-        } else if (columnIndex == 5) {
-            return oUtil.dateToString(oSubConta.getConta().getDataCriacao());
-        } else {
-            return oUtil.dateToString(oSubConta.getDataPagamento());
+        switch (columnIndex) {
+            case 0:
+                return oSubConta.getConta().getId();
+            case 1:
+                return oSubConta.getSequencia();
+            case 2:
+                return oSubConta.getConta().getEntidade().getNome();
+            case 3:
+                return oSubConta.getValorParcelaFormatado();
+            case 4:
+                return util.dateToString(oSubConta.getDataVencimento());
+            case 5:
+                return util.dateToString(oSubConta.getConta().getDataCriacao());
+            default:
+                return util.dateToString(oSubConta.getDataPagamento());
         }
     }
 
     @Override
     public String getColumnName(int column) {
-        if (column == 0) {
-            return "Nº Conta";
-        } else if (column == 1) {
-            return "Nº Parcela";
-        } else if (column == 2) {
-            return "Entidade";
-        } else if (column == 3) {
-            return "Valor";
-        } else if (column == 4) {
-            return "Dt. Vencimento";
-        } else if (column == 5) {
-            return "Dt. Criação";
-        } else {
-            return "Dt. Pagamento";
+        switch (column) {
+            case 0:
+                return "Nº Conta";
+            case 1:
+                return "Nº Parcela";
+            case 2:
+                return "Entidade";
+            case 3:
+                return "Valor";
+            case 4:
+                return "Dt. Vencimento";
+            case 5:
+                return "Dt. Criação";
+            default:
+                return "Dt. Pagamento";
         }
     }
 

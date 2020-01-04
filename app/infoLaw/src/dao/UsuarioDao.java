@@ -41,8 +41,7 @@ public class UsuarioDao {
     }
 
     public boolean update(String username, int senha) {
-        try {
-            System.out.println("Usuario Antigo" + Usuario.getInstance().toString());
+        try {            
             conexao = Conexao.getConnection();
             stmt = conexao.prepareStatement("update usuario set "
                     + "senha = ?,"
@@ -55,8 +54,7 @@ public class UsuarioDao {
             stmt.setInt(3, Usuario.getInstance().getId());
             stmt.execute();
 
-            autentica(username, senha);
-            System.out.println("Usuario alterado" + Usuario.getInstance().toString());
+            autentica(username, senha);            
             return true;
         } catch (SQLException e) {
             System.out.println(stmt.toString());

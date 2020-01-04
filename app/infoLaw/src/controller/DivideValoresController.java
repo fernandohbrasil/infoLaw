@@ -7,24 +7,21 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.swing.JOptionPane;
 import model.SubConta;
+import util.CurrencyUtil;
 import view.FormDivideValores;
-import view.model.ParcelaContaModel;
 import view.model.SubContaModel;
 
 public class DivideValoresController {
 
     private FormDivideValores frmDivideValores;
-    private ContaDao dao;
+    private final ContaDao dao;
 
     private ArrayList<SubConta> parcelas;
-
-    private SubContaModel subContaModel;
+    private final SubContaModel subContaModel;
 
     public DivideValoresController() {
         frmDivideValores = new FormDivideValores(frmDivideValores, true);
-
         subContaModel = new SubContaModel();
-
         dao = new ContaDao();
 
         inicializarComponente();
@@ -32,27 +29,18 @@ public class DivideValoresController {
 
     private void inicializarComponente() {
 
-        frmDivideValores.btnFecha.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                fechar();
-            }
+        frmDivideValores.btnFecha.addActionListener((ActionEvent e) -> {
+            fechar();
         });
 
         frmDivideValores.tbParcelas.setModel(subContaModel);
 
-        frmDivideValores.btnDivide.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                divideValores();
-            }
+        frmDivideValores.btnDivide.addActionListener((ActionEvent e) -> {
+            divideValores();
         });
-        
-        frmDivideValores.btnFiltrar.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                filtrarParcelas();
-            }
+
+        frmDivideValores.btnFiltrar.addActionListener((ActionEvent e) -> {
+            filtrarParcelas();
         });
     }
 
@@ -64,7 +52,7 @@ public class DivideValoresController {
         //Limpando todos os campos da tela
         subContaModel.limpar();
         subContaModel.fireTableDataChanged();
-        
+
         frmDivideValores.rgReceber.setSelected(true);
     }
 
@@ -76,14 +64,17 @@ public class DivideValoresController {
     }
 
     private void filtrarParcelas() {
-        List<SubConta> todos = null;
-
+        List<SubConta> todos;
+        double total = 0;
         todos = dao.buscaParcelasNaoDividas(getPagaRecebe());
 
         subContaModel.limpar();
-        for (SubConta oSubConta : todos) {
-            subContaModel.addSubConta(oSubConta);
+        for (SubConta subConta : todos) {
+            subContaModel.addSubConta(subConta);
+            total = total + subConta.getValorParcela();
         }
+
+        frmDivideValores.lblTotal.setText("Total: R$ " + CurrencyUtil.getFormatCurrency(total));
         subContaModel.fireTableDataChanged();
     }
 
@@ -96,9 +87,8 @@ public class DivideValoresController {
     }
 
     private void divideValores() {
-        
-        int contaId = 0;
-        int sequencia = 0;
+        int contaId;
+        int sequencia;
 
         contaId = subContaModel.getSubConta(frmDivideValores.tbParcelas.getSelectedRow()).getConta().getId();
         sequencia = subContaModel.getSubConta(frmDivideValores.tbParcelas.getSelectedRow()).getSequencia();

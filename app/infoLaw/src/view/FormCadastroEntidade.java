@@ -41,6 +41,7 @@ public class FormCadastroEntidade extends javax.swing.JFrame {
         lblIe = new javax.swing.JLabel();
         lblRg = new javax.swing.JLabel();
         edtRg = new javax.swing.JTextField();
+        cbValidaCpf = new javax.swing.JCheckBox();
         lblTitulo = new javax.swing.JLabel();
         btnGrava = new javax.swing.JButton();
         btnCancela = new javax.swing.JButton();
@@ -52,8 +53,9 @@ public class FormCadastroEntidade extends javax.swing.JFrame {
         rgJuridica = new javax.swing.JRadioButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setMinimumSize(new java.awt.Dimension(600, 340));
-        setPreferredSize(new java.awt.Dimension(575, 420));
+        setMinimumSize(new java.awt.Dimension(590, 400));
+        setPreferredSize(new java.awt.Dimension(590, 400));
+        setSize(new java.awt.Dimension(590, 400));
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         pnPrincipal.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
@@ -126,7 +128,7 @@ public class FormCadastroEntidade extends javax.swing.JFrame {
             ex.printStackTrace();
         }
         edtCnpj.setHorizontalAlignment(javax.swing.JTextField.RIGHT);
-        pnPrincipal.add(edtCnpj, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 270, 120, -1));
+        pnPrincipal.add(edtCnpj, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 270, 140, -1));
 
         pnPrincipal.add(cbMunicipio, new org.netbeans.lib.awtextra.AbsoluteConstraints(210, 150, 200, -1));
 
@@ -138,19 +140,7 @@ public class FormCadastroEntidade extends javax.swing.JFrame {
         lblRaca.setText("CEP");
         pnPrincipal.add(lblRaca, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 240, -1, -1));
         pnPrincipal.add(edtNumero, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 240, 100, -1));
-
-        edtCep.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                edtCepActionPerformed(evt);
-            }
-        });
         pnPrincipal.add(edtCep, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 240, 120, -1));
-
-        edtIe.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                edtIeActionPerformed(evt);
-            }
-        });
         pnPrincipal.add(edtIe, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 270, 120, -1));
 
         lblIe.setFont(new java.awt.Font("Times New Roman", 1, 12)); // NOI18N
@@ -160,13 +150,13 @@ public class FormCadastroEntidade extends javax.swing.JFrame {
         lblRg.setFont(new java.awt.Font("Times New Roman", 1, 12)); // NOI18N
         lblRg.setText("RG");
         pnPrincipal.add(lblRg, new org.netbeans.lib.awtextra.AbsoluteConstraints(260, 270, -1, -1));
-
-        edtRg.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                edtRgActionPerformed(evt);
-            }
-        });
         pnPrincipal.add(edtRg, new org.netbeans.lib.awtextra.AbsoluteConstraints(290, 270, 120, -1));
+
+        cbValidaCpf.setFont(new java.awt.Font("Ubuntu", 1, 13)); // NOI18N
+        cbValidaCpf.setSelected(true);
+        cbValidaCpf.setText("Valida CPF/CNPJ");
+        cbValidaCpf.setToolTipText("");
+        pnPrincipal.add(cbValidaCpf, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 30, -1, -1));
 
         getContentPane().add(pnPrincipal, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 42, -1, -1));
 
@@ -260,18 +250,6 @@ public class FormCadastroEntidade extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void edtCepActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_edtCepActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_edtCepActionPerformed
-
-    private void edtIeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_edtIeActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_edtIeActionPerformed
-
-    private void edtRgActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_edtRgActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_edtRgActionPerformed
-
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public javax.swing.JButton btnCancela;
@@ -281,6 +259,7 @@ public class FormCadastroEntidade extends javax.swing.JFrame {
     public javax.swing.JButton btnGrava;
     public javax.swing.JComboBox<String> cbMunicipio;
     public javax.swing.JComboBox<String> cbUF;
+    public javax.swing.JCheckBox cbValidaCpf;
     public javax.swing.JTextField edtBairro;
     public javax.swing.JTextField edtCep;
     public javax.swing.JFormattedTextField edtCnpj;

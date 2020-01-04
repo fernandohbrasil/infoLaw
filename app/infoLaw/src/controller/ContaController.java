@@ -4,11 +4,15 @@ import util.DateUtil;
 import dao.ContaDao;
 import dao.EntidadeDao;
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.sql.SQLException;
+import java.text.ParseException;
 import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Currency;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
@@ -19,6 +23,7 @@ import javax.swing.event.PopupMenuListener;
 import model.Conta;
 import model.Entidade;
 import model.SubConta;
+import util.CurrencyUtil;
 import view.FormLancaConta;
 import view.consulta.FormConsultaEntidade;
 import view.model.EntidadeModel;
@@ -38,8 +43,6 @@ public class ContaController {
     private final FormConsultaEntidade frmConsEntidade;
     private final EntidadeModel entidadeModel;
 
-    private final DateUtil dateUtil;
-
     public ContaController() {
         frmLancaConta = new FormLancaConta(null, true);
         frmConsEntidade = new FormConsultaEntidade(frmLancaConta, true);
@@ -51,8 +54,6 @@ public class ContaController {
         entidade = new Entidade();
         entidadeModel = new EntidadeModel();
         entDao = new EntidadeDao();
-
-        dateUtil = new DateUtil();
 
         inicializarComponente();
     }
@@ -129,11 +130,11 @@ public class ContaController {
     private void limparCampos() {
         //Limpando todos os campos da tela
         frmLancaConta.edtCodigo.setText(null);
-        frmLancaConta.edtCliente.setText(null);       
+        frmLancaConta.edtCliente.setText(null);
         frmLancaConta.cbCliente.setSelectedIndex(-1);
         frmLancaConta.rgReceber.setSelected(true);
         frmLancaConta.cbVista.setSelected(false);
-        frmLancaConta.edtData.setText(dateUtil.getFormt().format(Date.from(Instant.now())));
+        frmLancaConta.edtData.setText(DateUtil.fullDateNow());
         frmLancaConta.edtQtdParc.setText("1");
         frmLancaConta.edtTotal.setText("0,00");
         frmLancaConta.txParcelas.setText(null);
@@ -203,30 +204,32 @@ public class ContaController {
     }
 
     private void mostraParcelas() {
-        gerarParcelas();
+        if (validaCampos()) {
+            gerarParcelas();
 
-        String parcelasInfo;
+            String parcelasInfo;
 
-        parcelasInfo = "Conta: " + this.conta.getId() + "\n"
-                + "Cliente: " + this.conta.getEntidade().getNome() + "\n"
-                + "Data Lançamento: " + dateUtil.dateToString(this.conta.getDataCriacao()) + "\n"
-                + "Valor Total: " + this.conta.getValorTotal() + "\n\n";
+            parcelasInfo = "Conta: " + this.conta.getId() + "\n"
+                    + "Cliente: " + this.conta.getEntidade().getNome() + "\n"
+                    + "Data Lançamento: " + DateUtil.dateToString(this.conta.getDataCriacao()) + "\n"
+                    + "Valor Total: " + this.conta.getValorTotalFormatado() + "\n\n";
 
-        for (int i = 0; i < this.parcelas.size(); i++) {
-            parcelasInfo = parcelasInfo
-                    + "    Parcela: " + this.parcelas.get(i).getSequencia() + "\n"
-                    + "    Data de Vencimento: " + dateUtil.dateToString(this.parcelas.get(i).getDataVencimento()) + "\n"
-                    + "    Data de Pagamento: " + dateUtil.dateToString(this.parcelas.get(i).getDataPagamento()) + "\n"
-                    + "    Valor Parcela: " + this.parcelas.get(i).getValorParcela() + "\n"
-                    + "    Valor Pago: " + this.parcelas.get(i).getValorPago() + "\n\n";
+            for (int i = 0; i < this.parcelas.size(); i++) {
+                parcelasInfo = parcelasInfo
+                        + "    Parcela: " + this.parcelas.get(i).getSequencia() + "\n"
+                        + "    Data de Vencimento: " + DateUtil.dateToString(this.parcelas.get(i).getDataVencimento()) + "\n"
+                        + "    Data de Pagamento: " + DateUtil.dateToString(this.parcelas.get(i).getDataPagamento()) + "\n"
+                        + "    Valor Parcela: " + this.parcelas.get(i).getValorParcelaFormatado() + "\n"
+                        + "    Valor Pago: " + this.parcelas.get(i).getValorPagoFormatado() + "\n\n";
+            }
+            frmLancaConta.txParcelas.setText(parcelasInfo);
         }
-        frmLancaConta.txParcelas.setText(parcelasInfo);
     }
 
     private void gravar() throws SQLException {
         if ((!frmLancaConta.txParcelas.getText().isEmpty()) && (this.parcelas.size() > 0)) {
             this.conta.setObs(frmLancaConta.txObs.getText());
-            
+
             if (dao.insert(conta, parcelas)) {
                 JOptionPane.showMessageDialog(frmLancaConta, "Parcelas Gravadas com Sucesso");
                 limparCampos();
@@ -255,88 +258,58 @@ public class ContaController {
 
         this.conta.setId(Integer.parseInt(String.valueOf(dao.getNextId())));
         this.conta.setEntidade(this.entidades.get(frmLancaConta.cbCliente.getSelectedIndex()));
-        this.conta.setValorTotal(Double.parseDouble(frmLancaConta.edtTotal.getText()));
+        this.conta.setValorTotal(CurrencyUtil.getValorFromEdit(frmLancaConta.edtTotal.getText()));
         this.conta.setDataCriacao(Date.from(Instant.now()));
-        this.conta.setStatus(getStatus());        
+        this.conta.setStatus(getStatus());
 
-        if (validaCampos()) {
-            if (frmLancaConta.cbVista.isSelected()) {
-                SubConta subConta = new SubConta();
-                subConta.setConta(conta);
-                subConta.setSequencia(1);
-                subConta.setDataPagamento(dateUtil.stringToDate(frmLancaConta.edtData.getText()));
-                subConta.setDataVencimento(dateUtil.stringToDate(frmLancaConta.edtData.getText()));
-                subConta.setValorPago(conta.getValorTotal());
-                subConta.setValorParcela(conta.getValorTotal());
-                subConta.setSituacao(1);
-                this.parcelas.add(subConta);
-            } else {
-                for (int i = 0; i < qtdParcelas; i++) {
-                    SubConta oSubConta = new SubConta();
+        if (frmLancaConta.cbVista.isSelected()) {
+            SubConta subConta = new SubConta();
+            subConta.setConta(conta);
+            subConta.setSequencia(1);
+            subConta.setDataPagamento(DateUtil.stringToDate(frmLancaConta.edtData.getText()));
+            subConta.setDataVencimento(DateUtil.stringToDate(frmLancaConta.edtData.getText()));
+            subConta.setValorPago(conta.getValorTotal());
+            subConta.setValorParcela(conta.getValorTotal());
+            subConta.setSituacao(1);
+            this.parcelas.add(subConta);
+        } else {
+            for (int i = 0; i < qtdParcelas; i++) {
+                SubConta oSubConta = new SubConta();
 
-                    oSubConta.setConta(conta);
-                    oSubConta.setSequencia(i + 1);
-                    oSubConta.setValorParcela(conta.getValorTotal() / qtdParcelas);
-                    oSubConta.setDataVencimento(dateUtil.addMonth(dateUtil.stringToDate(frmLancaConta.edtData.getText()), i));
+                oSubConta.setConta(conta);
+                oSubConta.setSequencia(i + 1);
+                oSubConta.setValorParcela(conta.getValorTotal() / qtdParcelas);
+                oSubConta.setDataVencimento(DateUtil.addMonth(DateUtil.stringToDate(frmLancaConta.edtData.getText()), i));
 
-                    this.parcelas.add(oSubConta);
-                }
+                this.parcelas.add(oSubConta);
+            }
 
-                if (dateUtil.dateToString(Date.from(Instant.now())).equals(frmLancaConta.edtData.getText())) {
-                    int respota = JOptionPane.showConfirmDialog(frmLancaConta, "A Data de vencimento da primeira parcela é "
-                            + "igual a data atual!\n"
-                            + "Deseja gerar a primeira parcela paga?");
+            if (DateUtil.fullDateNow().equals(frmLancaConta.edtData.getText())) {
+                int respota = JOptionPane.showConfirmDialog(frmLancaConta, "A Data de vencimento da primeira parcela é "
+                        + "igual a data atual!\n"
+                        + "Deseja gerar a primeira parcela paga?");
 
-                    if (respota == 0) {
-                        this.parcelas.get(0).setSituacao(1);
-                        this.parcelas.get(0).setDataPagamento(Date.from(Instant.now()));
-                        this.parcelas.get(0).setValorPago(conta.getValorTotal() / qtdParcelas);
-                    }
+                if (respota == 0) {
+                    this.parcelas.get(0).setSituacao(1);
+                    this.parcelas.get(0).setDataPagamento(Date.from(Instant.now()));
+                    this.parcelas.get(0).setValorPago(conta.getValorTotal() / qtdParcelas);
                 }
             }
         }
     }
 
     private boolean validaCampos() {
-        boolean validou = false;
-        if (validaCliente()) {
-            if (validaTotal()) {
-                if (validaParcelas()) {
-                    if (validaData()) {
-                        validou = true;
-                    } else {
-                        JOptionPane.showMessageDialog(frmLancaConta, "Data de Vencimento inválida! Possíveis causas:"
-                                + "\n * Campo Vazio"
-                                + "\n * Formatação incorreta, seguir o padrão DD/MM/AAAA"
-                                + "\n \n"
-                                + "Essa data é utilizada como base para a primeira parcela, \n"
-                                + "as demais serão lançadas num interválo de 30 dias");
-                        frmLancaConta.edtData.grabFocus();
-                    }
-                } else {
-                    JOptionPane.showMessageDialog(frmLancaConta, "Quantidade de parcelas inválida! Possíveis causas:"
-                            + "\n * Número menor ou igual a zero"
-                            + "\n * Formatação decimal incorreta");
-                    frmLancaConta.edtQtdParc.grabFocus();
-                }
-            } else {
-                JOptionPane.showMessageDialog(frmLancaConta, "Valor Total inválido! Possíveis causas:"
-                        + "\n * Número menor ou igual a zero"
-                        + "\n * Formatação decimal incorreta");
-                frmLancaConta.edtTotal.grabFocus();
-            }
-        } else {
-            JOptionPane.showMessageDialog(frmLancaConta, "Cliente não selecionado!"
-                    + "\n * Necessário que apareça o nome do cliente na tela!");
-            frmLancaConta.cbCliente.grabFocus();
-        }
-        return validou;
+        return validaCliente() && validaTotal() && validaParcelas() && validaData();
     }
 
     private boolean validaTotal() {
-        try {
-            return Double.valueOf(frmLancaConta.edtTotal.getText()) > 0;
-        } catch (NumberFormatException e) {
+        if (CurrencyUtil.getValorFromEdit(frmLancaConta.edtTotal.getText()) > 0) {
+            return true;
+        } else {
+            JOptionPane.showMessageDialog(frmLancaConta, "Valor Total inválido! Possíveis causas:"
+                    + "\n * Número menor ou igual a zero"
+                    + "\n * Formatação decimal incorreta");
+            frmLancaConta.edtTotal.grabFocus();
             return false;
         }
     }
@@ -345,14 +318,25 @@ public class ContaController {
         try {
             return Integer.valueOf(frmLancaConta.edtQtdParc.getText()) > 0;
         } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(frmLancaConta, "Quantidade de parcelas inválida! Possíveis causas:"
+                    + "\n * Número menor ou igual a zero"
+                    + "\n * Formatação decimal incorreta");
+            frmLancaConta.edtQtdParc.grabFocus();
             return false;
         }
     }
 
     private boolean validaData() {
         try {
-            return dateUtil.validaData(frmLancaConta.edtData.getText());
+            return DateUtil.validaData(frmLancaConta.edtData.getText());
         } catch (Exception e) {
+            JOptionPane.showMessageDialog(frmLancaConta, "Data de Vencimento inválida! Possíveis causas:"
+                    + "\n * Campo Vazio"
+                    + "\n * Formatação incorreta, seguir o padrão DD/MM/AAAA"
+                    + "\n \n"
+                    + "Essa data é utilizada como base para a primeira parcela, \n"
+                    + "as demais serão lançadas num interválo de 30 dias");
+            frmLancaConta.edtData.grabFocus();
             return false;
         }
     }
@@ -361,6 +345,9 @@ public class ContaController {
         try {
             return frmLancaConta.cbCliente.getSelectedItem() != null;
         } catch (Exception e) {
+            JOptionPane.showMessageDialog(frmLancaConta, "Cliente não selecionado!"
+                    + "\n * Necessário que apareça o nome do cliente na tela!");
+            frmLancaConta.cbCliente.grabFocus();
             return false;
         }
     }

@@ -125,7 +125,7 @@ public class EntidadeDao {
             rs.next();
             return rs.getInt("codigo");
 
-        } catch (Exception e) {
+        } catch (SQLException e) {
             return 0;
         } finally {
             try {
@@ -146,7 +146,7 @@ public class EntidadeDao {
                     + "order by nome ");
             ResultSet rs = stmt.executeQuery();
 
-            ArrayList<Entidade> entidades = new ArrayList<Entidade>();
+            ArrayList<Entidade> entidades = new ArrayList<>();
 
             while (rs.next()) {
                 Entidade oEnt = new Entidade();
@@ -158,16 +158,54 @@ public class EntidadeDao {
                 oEnt.setCep(rs.getString("cep"));
                 oEnt.setBairro(rs.getString("bairro"));
                 oEnt.setRua(rs.getString("rua"));
-                oEnt.setNumero(rs.getString("numero"));                
+                oEnt.setNumero(rs.getString("numero"));
                 oEnt.setCpf(rs.getString("cpf"));
                 oEnt.setRg(rs.getString("rg"));
                 oEnt.setCnpj(rs.getString("cnpj"));
-                oEnt.setIe(rs.getString("ie"));                
+                oEnt.setIe(rs.getString("ie"));
                 entidades.add(oEnt);
             }
             return entidades;
-        } catch (Exception e) {
+        } catch (SQLException e) {
             return null;
+        } finally {
+            try {
+                stmt.close();
+                conexao.close();
+            } catch (SQLException ex) {
+
+            }
+        }
+    }
+
+    public boolean existeCpf(String cpf) {
+        try {
+            conexao = Conexao.getConnection();
+            stmt = conexao.prepareStatement("select * from entidade where cpf = ?");
+            stmt.setString(1, cpf);
+            ResultSet rs = stmt.executeQuery();
+            return rs.next();
+        } catch (SQLException e) {
+            return true;
+        } finally {
+            try {
+                stmt.close();
+                conexao.close();
+            } catch (SQLException ex) {
+
+            }
+        }
+    }
+
+    public boolean existeCnpj(String cnpj) {
+        try {
+            conexao = Conexao.getConnection();
+            stmt = conexao.prepareStatement("select * from entidade where cnpj = ?");
+            stmt.setString(1, cnpj);
+            ResultSet rs = stmt.executeQuery();
+            return rs.next();
+        } catch (SQLException e) {
+            return true;
         } finally {
             try {
                 stmt.close();

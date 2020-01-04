@@ -26,6 +26,7 @@ import javax.swing.event.PopupMenuListener;
 import model.Entidade;
 import model.Filial;
 import model.SubConta;
+import model.Usuario;
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
@@ -132,8 +133,8 @@ public class RelatorioBaseController {
         frmRelatorioBase.rgDtVencimento.setSelected(true);
         frmRelatorioBase.cbxEntidade.setSelectedIndex(-1);
         frmRelatorioBase.edtCliente.setText(null);
-        frmRelatorioBase.edtDtIni.setText(oUtil.getFormt().format(Date.from(Instant.now())));
-        frmRelatorioBase.edtDtFin.setText(oUtil.getFormt().format(Date.from(Instant.now())));
+        frmRelatorioBase.edtDtIni.setText(oUtil.getDate().format(Date.from(Instant.now())));
+        frmRelatorioBase.edtDtFin.setText(oUtil.getDate().format(Date.from(Instant.now())));
 
         contaModel.limpar();
         contaModel.fireTableDataChanged();
@@ -251,6 +252,7 @@ public class RelatorioBaseController {
             parametros.put("order_by", getOrderBy());
             parametros.put("all_params", getAllParams());
             parametros.put("versao", filial.getVersao());
+            parametros.put("usuario", Usuario.getInstance().getUsername());
             parametros.put("logo", getLogo(filial));
 
             JasperPrint relatorio = JasperFillManager.fillReport("relatorios/financeiro_base.jasper", parametros, connexao);
@@ -318,8 +320,6 @@ public class RelatorioBaseController {
         String whereSituacao = getWhereSituacao();
         String whereEntidade = getWhereEntidade();
 
-        System.out.println(whereData + whereStatus + whereSituacao + whereEntidade);
-
         return whereData + whereStatus + whereSituacao + whereEntidade;
     }
 
@@ -368,8 +368,7 @@ public class RelatorioBaseController {
         String paramStatus = getParamStatus();
         String paramSituacao = getParamSituacao();
         String paramEntidade = getParamEntidade();
-
-        System.out.println(paramData + paramStatus + paramSituacao + paramEntidade);
+        
         return paramData + paramStatus + paramSituacao + paramEntidade;
     }
 

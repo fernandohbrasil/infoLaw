@@ -1,6 +1,7 @@
 package model;
 
 import java.util.Date;
+import util.CurrencyUtil;
 
 public class SubConta {
 
@@ -53,6 +54,10 @@ public class SubConta {
     public double getValorParcela() {
         return valorParcela;
     }
+    
+    public String getValorParcelaFormatado() {
+        return "R$ " + CurrencyUtil.getFormatCurrency(valorParcela);
+    }
 
     public void setValorParcela(double valorParcela) {
         this.valorParcela = valorParcela;
@@ -60,6 +65,10 @@ public class SubConta {
 
     public double getValorPago() {
         return valorPago;
+    }
+    
+    public String getValorPagoFormatado() {
+        return "R$ " + CurrencyUtil.getFormatCurrency(valorPago);        
     }
 
     public void setValorPago(double valorPago) {

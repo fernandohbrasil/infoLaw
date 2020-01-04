@@ -1,6 +1,7 @@
 package model;
 
 import java.util.Date;
+import util.CurrencyUtil;
 
 public class Conta {
 
@@ -42,6 +43,10 @@ public class Conta {
 
     public Double getValorTotal() {
         return valorTotal;
+    }
+    
+    public String getValorTotalFormatado() {
+        return "R$ " + CurrencyUtil.getFormatCurrency(valorTotal);
     }
 
     public void setValorTotal(Double valorTotal) {

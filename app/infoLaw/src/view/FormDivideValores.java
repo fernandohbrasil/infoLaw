@@ -18,7 +18,8 @@ public class FormDivideValores extends javax.swing.JFrame {
         pnPrincipal = new javax.swing.JPanel();
         jScrollPane3 = new javax.swing.JScrollPane();
         tbParcelas = new javax.swing.JTable();
-        lblTitulo1 = new javax.swing.JLabel();
+        lblTotal = new javax.swing.JLabel();
+        lblTitulo2 = new javax.swing.JLabel();
         lblTitulo = new javax.swing.JLabel();
         pnTipoConta = new javax.swing.JPanel();
         rgReceber = new javax.swing.JRadioButton();
@@ -56,12 +57,18 @@ public class FormDivideValores extends javax.swing.JFrame {
         ));
         jScrollPane3.setViewportView(tbParcelas);
 
-        pnPrincipal.add(jScrollPane3, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 45, 810, 230));
+        pnPrincipal.add(jScrollPane3, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 45, 810, 220));
 
-        lblTitulo1.setFont(new java.awt.Font("Serif", 1, 18)); // NOI18N
-        lblTitulo1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        lblTitulo1.setText("Parcelas");
-        pnPrincipal.add(lblTitulo1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 15, 840, -1));
+        lblTotal.setFont(new java.awt.Font("Serif", 1, 18)); // NOI18N
+        lblTotal.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        lblTotal.setText("Total: ");
+        lblTotal.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        pnPrincipal.add(lblTotal, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 270, 810, -1));
+
+        lblTitulo2.setFont(new java.awt.Font("Serif", 1, 18)); // NOI18N
+        lblTitulo2.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblTitulo2.setText("Parcelas");
+        pnPrincipal.add(lblTitulo2, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 15, 840, -1));
 
         getContentPane().add(pnPrincipal, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 42, 840, 300));
 
@@ -136,7 +143,8 @@ public class FormDivideValores extends javax.swing.JFrame {
     public javax.swing.JButton btnFiltrar;
     private javax.swing.JScrollPane jScrollPane3;
     private javax.swing.JLabel lblTitulo;
-    private javax.swing.JLabel lblTitulo1;
+    private javax.swing.JLabel lblTitulo2;
+    public javax.swing.JLabel lblTotal;
     public javax.swing.JPanel pnPrincipal;
     private javax.swing.JPanel pnTipoConta;
     public javax.swing.JRadioButton rgPagar;

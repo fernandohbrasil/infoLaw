@@ -1,19 +1,27 @@
 package util;
 
-import java.text.NumberFormat;
-import java.util.Locale;
+import java.text.DecimalFormat;
 
-/**
- *
- * @author fernando
- */
 public class CurrencyUtil {
     
-    public String getFormatCurrency(Double value){
-        return NumberFormat.getInstance(new Locale("pt", "BR")).format(value);
+    public static String getFormatCurrency(Double value) {
+        //return NumberFormat.getInstance(new Locale("pt", "BR")).format(value).;        
+        return new DecimalFormat("###,###,###,##0.00").format(value);
     }
     
-    public double getFormatCurrency(String value){        
+    public static double getFormatCurrency(String value) {        
         return Double.valueOf(value);
     }    
+    
+    public static Double getValorFromEdit(String editValue) {
+        try {
+            return Double.parseDouble(editValue);
+        } catch (NumberFormatException exception) {
+            try {
+                return Double.parseDouble(editValue.replace(',', '.'));
+            } catch (NumberFormatException e) {
+                return 0.0;
+            }
+        }
+    }
 }

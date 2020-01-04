@@ -22,6 +22,7 @@
 	<parameter name="situacao" class="java.lang.Integer" isForPrompting="false">
 		<defaultValueExpression><![CDATA[0]]></defaultValueExpression>
 	</parameter>
+	<parameter name="usuario" class="java.lang.String" isForPrompting="false"/>
 	<queryString>
 		<![CDATA[Select
   entidade.nome,
@@ -110,6 +111,13 @@ order by
 					<font fontName="SansSerif" size="9" isBold="false"/>
 				</textElement>
 				<textFieldExpression><![CDATA["Página"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="420" y="24" width="152" height="12" uuid="3cd720ac-b527-4bc0-a26a-a9b03c3e2cae"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Usuario: "+ $P{usuario}]]></textFieldExpression>
 			</textField>
 		</band>
 	</pageHeader>

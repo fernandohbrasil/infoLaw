@@ -7,8 +7,8 @@ import util.DateUtil;
 
 public class ParcelaContaModel extends AbstractTableModel {
 
-    private ArrayList<SubConta> subContas = new ArrayList<SubConta>();
-    private DateUtil oUtil = new DateUtil();
+    private final ArrayList<SubConta> subContas = new ArrayList<>();
+    private final DateUtil util = new DateUtil();
 
     @Override
     public int getRowCount() {
@@ -27,31 +27,33 @@ public class ParcelaContaModel extends AbstractTableModel {
 
         // Segundo, recuperar o atributo do objeto a ser 
         // mostrado naquela coluna
-        if (columnIndex == 0) {
-            return oSubConta.getSequencia();
-        } else if (columnIndex == 1) {
-            return oUtil.dateToString(oSubConta.getDataVencimento());
-        } else if (columnIndex == 2) {
-            return oUtil.dateToString(oSubConta.getDataPagamento());
-        } else if (columnIndex == 3) {
-            return oSubConta.getValorParcela();
-        } else {
-            return oSubConta.getSituacaoS();
+        switch (columnIndex) {
+            case 0:
+                return oSubConta.getSequencia();
+            case 1:
+                return util.dateToString(oSubConta.getDataVencimento());
+            case 2:
+                return util.dateToString(oSubConta.getDataPagamento());
+            case 3:
+                return oSubConta.getValorParcelaFormatado();
+            default:
+                return oSubConta.getSituacaoS();
         }
     }
 
     @Override
     public String getColumnName(int column) {
-        if (column == 0) {
-            return "Nº Parcela";
-        } else if (column == 1) {
-            return "Dt. Vencimento";
-        } else if (column == 2) {
-            return "Dt. Pagamento";
-        } else if (column == 3) {
-            return "Valor Parcela";
-        } else {
-            return "Situação";
+        switch (column) {
+            case 0:
+                return "Nº Parcela";
+            case 1:
+                return "Dt. Vencimento";
+            case 2:
+                return "Dt. Pagamento";
+            case 3:
+                return "Valor Parcela";
+            default:
+                return "Situação";
         }
     }
 

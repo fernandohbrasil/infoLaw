@@ -3,6 +3,8 @@ package controller;
 import dao.EntidadeDao;
 import dao.MunicipioDao;
 import java.awt.event.ActionEvent;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.WindowAdapter;
@@ -98,6 +100,30 @@ public class EntidadeController {
             fecharConsulta();
         });
 
+        frmCadEntidade.edtCnpj.addFocusListener(new FocusListener() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                frmCadEntidade.edtCnpj.selectAll();
+            }
+
+            @Override
+            public void focusLost(FocusEvent e) {
+
+            }
+        });
+
+        frmCadEntidade.edtCpf.addFocusListener(new FocusListener() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                frmCadEntidade.edtCpf.selectAll();
+            }
+
+            @Override
+            public void focusLost(FocusEvent e) {
+
+            }
+        });
+
     }
 
     private void fecharConsulta() {
@@ -142,23 +168,25 @@ public class EntidadeController {
     }
 
     private void gravar() throws SQLException {
-        if (frmCadEntidade.edtCodigo.getText().isEmpty()) {
-            //Se código vazio, objeto novo
-            if (dao.insert(buscarDadosForm()) == false) {
-                JOptionPane.showMessageDialog(null, "Erro ao inserir Entidade");
+        if (validaCampos()) {
+            if (frmCadEntidade.edtCodigo.getText().isEmpty()) {
+                //Se código vazio, objeto novo
+                if (dao.insert(buscarDadosForm()) == false) {
+                    JOptionPane.showMessageDialog(null, "Erro ao inserir Entidade");
+                } else {
+                    limparCampos();
+                    //Seto o foco no campo Nome
+                    frmCadEntidade.edtNome.grabFocus();
+                }
             } else {
-                limparCampos();
-                //Seto o foco no campo Nome
-                frmCadEntidade.edtNome.grabFocus();
-            }
-        } else {
-            //Se código diferente de vazio objeto existente
-            if (dao.update(buscarDadosForm()) == false) {
-                JOptionPane.showMessageDialog(null, "Erro ao atualizar Entidade");
-            } else {
-                limparCampos();
-                //Seto o foco no  campo Nome
-                frmCadEntidade.edtNome.grabFocus();
+                //Se código diferente de vazio objeto existente
+                if (dao.update(buscarDadosForm()) == false) {
+                    JOptionPane.showMessageDialog(null, "Erro ao atualizar Entidade");
+                } else {
+                    limparCampos();
+                    //Seto o foco no  campo Nome
+                    frmCadEntidade.edtNome.grabFocus();
+                }
             }
         }
     }
@@ -188,21 +216,21 @@ public class EntidadeController {
 
     private void limparCampos() {
         //Limpando todos os campos da tela
-        frmCadEntidade.edtCodigo.setText(null);
-        frmCadEntidade.edtNome.setText(null);
-        frmCadEntidade.edtFone.setText(null);
-        frmCadEntidade.edtEmail.setText(null);
+        frmCadEntidade.edtCodigo.setText("");
+        frmCadEntidade.edtNome.setText("");
+        frmCadEntidade.edtFone.setText("");
+        frmCadEntidade.edtEmail.setText("");
         frmCadEntidade.cbUF.setSelectedIndex(23);
         selecionaUf("SC");
 
         frmCadEntidade.edtCep.setText("88400-000");
-        frmCadEntidade.edtBairro.setText(null);
-        frmCadEntidade.edtRua.setText(null);
-        frmCadEntidade.edtNumero.setText(null);
-        frmCadEntidade.edtCpf.setText(null);
-        frmCadEntidade.edtRg.setText(null);
-        frmCadEntidade.edtCnpj.setText(null);
-        frmCadEntidade.edtIe.setText(null);
+        frmCadEntidade.edtBairro.setText("");
+        frmCadEntidade.edtRua.setText("");
+        frmCadEntidade.edtNumero.setText("");
+        frmCadEntidade.edtCpf.setText("");
+        frmCadEntidade.edtRg.setText("");
+        frmCadEntidade.edtCnpj.setText("");
+        frmCadEntidade.edtIe.setText("");
     }
 
     private void selecionaUf(String uf) {
@@ -403,6 +431,71 @@ public class EntidadeController {
                 return 26;
             default:
                 return 0;
+        }
+    }
+
+    private boolean validaCampos() {
+        return validaDocumento() && validaNome();
+    }
+
+    private boolean validaDocumento() {
+        if (!frmCadEntidade.cbValidaCpf.isSelected()) {
+            return true;
+        }
+
+        if (frmCadEntidade.rgFisica.isSelected()) {
+            return validaCpf();
+        }
+
+        return validaCnpj();
+    }
+
+    private boolean validaCpf() {
+        String cpf = frmCadEntidade.edtCpf.getText().replaceAll("-", "");
+        cpf = cpf.replace(".", "").trim();
+
+        if (cpf.isEmpty() && cpf.length() != 11) {
+            JOptionPane.showMessageDialog(frmCadEntidade, "Necessário preencher o CPF!");
+            frmCadEntidade.edtCpf.grabFocus();
+            return false;
+        }
+
+        if (dao.existeCpf(frmCadEntidade.edtCpf.getText())) {
+            JOptionPane.showMessageDialog(frmCadEntidade, "Esse CPF ja foi informado em outro Cadastro!");
+            frmCadEntidade.edtCpf.grabFocus();
+            return false;
+        }
+
+        return true;
+    }
+
+    private boolean validaCnpj() {
+        String cnpj = frmCadEntidade.edtCnpj.getText().replaceAll("-", "");
+        cnpj = cnpj.replace("/", "");
+        cnpj = cnpj.replace(".", "").trim();
+
+        if (cnpj.isEmpty() && cnpj.length() != 14) {
+            JOptionPane.showMessageDialog(frmCadEntidade, "Necessário preencher o CNPJ!");
+            frmCadEntidade.edtCnpj.grabFocus();
+            return false;
+        }
+
+        if (dao.existeCnpj(frmCadEntidade.edtCnpj.getText())) {
+            JOptionPane.showMessageDialog(frmCadEntidade, "Esse CNPJ ja foi informado em outro Cadastro!");
+            frmCadEntidade.edtCnpj.grabFocus();
+            return false;
+        }
+
+        return true;
+    }
+
+    private boolean validaNome() {
+        if (frmCadEntidade.edtNome.getText().trim().isEmpty()) {
+            JOptionPane.showMessageDialog(frmCadEntidade, "Necessário preencher o nome!");
+            frmCadEntidade.edtNome.grabFocus();
+            return false;
+        } else {
+            return true;
         }
     }
 }

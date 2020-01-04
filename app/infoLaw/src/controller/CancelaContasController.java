@@ -1,6 +1,5 @@
 package controller;
 
-import util.DateUtil;
 import dao.ContaDao;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
@@ -24,8 +23,6 @@ public class CancelaContasController {
     private final ContaModel contaModel;
     private final ParcelaContaModel subContaModel;
 
-    private final DateUtil oUtil;
-
     public CancelaContasController() {
         frmCancelaConta = new FormCancelaConta(null, true);
 
@@ -33,8 +30,6 @@ public class CancelaContasController {
         subContaModel = new ParcelaContaModel();
 
         dao = new ContaDao();
-        oUtil = new DateUtil();
-
         inicializarComponente();
     }
 

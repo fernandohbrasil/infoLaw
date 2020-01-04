@@ -77,6 +77,8 @@ public class FormLancaConta extends javax.swing.JFrame {
         lblTelefone2.setFont(new java.awt.Font("Serif", 1, 12)); // NOI18N
         lblTelefone2.setText("Vl. Total");
         pnPrincipal.add(lblTelefone2, new org.netbeans.lib.awtextra.AbsoluteConstraints(15, 90, -1, -1));
+
+        edtTotal.setToolTipText("Ex: 50,20");
         pnPrincipal.add(edtTotal, new org.netbeans.lib.awtextra.AbsoluteConstraints(80, 90, 70, -1));
 
         btnGeraParc.setFont(new java.awt.Font("Serif", 1, 12)); // NOI18N

@@ -2,6 +2,7 @@ package controller;
 
 import dao.UsuarioDao;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import javax.swing.JOptionPane;
@@ -35,6 +36,13 @@ public class LoginController {
             }
         });
 
+        frmLogin.edtUsuario.addActionListener((ActionEvent e) -> {
+            frmLogin.edtSenha.grabFocus();
+        });
+        
+        frmLogin.edtSenha.addActionListener((ActionEvent e) -> {
+            autenticar();
+        });
     }
 
     private void autenticar() {

@@ -143,6 +143,7 @@ public class EntidadeDao {
             stmt = conexao.prepareStatement(
                     "select id, nome, telefone, email, municipioId, cep, bairro, rua, numero, cpf, rg, cnpj, ie "
                     + "from entidade "
+                    + "where id > 0 "
                     + "order by nome ");
             ResultSet rs = stmt.executeQuery();
 

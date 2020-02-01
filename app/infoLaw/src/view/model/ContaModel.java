@@ -7,8 +7,7 @@ import util.DateUtil;
 
 public class ContaModel extends AbstractTableModel {
 
-    private ArrayList<Conta> contas = new ArrayList<Conta>();
-    private DateUtil oUtil = new DateUtil();
+    private final ArrayList<Conta> contas = new ArrayList<>();
 
     @Override
     public int getRowCount() {
@@ -27,27 +26,29 @@ public class ContaModel extends AbstractTableModel {
 
         // Segundo, recuperar o atributo do objeto a ser 
         // mostrado naquela coluna
-        if (columnIndex == 0) {
-            return oConta.getId();
-        } else if (columnIndex == 1) {
-            return oConta.getEntidade().getNome();
-        } else if (columnIndex == 2) {
-            return oUtil.dateToString(oConta.getDataCriacao());
-        } else {
-            return oConta.getValorTotal();
+        switch (columnIndex) {
+            case 0:
+                return oConta.getId();
+            case 1:
+                return oConta.getEntidade().getNome();
+            case 2:
+                return DateUtil.dateToString(oConta.getDataCriacao());
+            default:
+                return oConta.getValorTotalFormatado();
         }
     }
 
     @Override
     public String getColumnName(int column) {
-        if (column == 0) {
-            return "Código";
-        } else if (column == 1) {
-            return "Entidade";
-        } else if (column == 2) {
-            return "Dt. Criação";
-        } else {
-            return "Valor Total";
+        switch (column) {
+            case 0:
+                return "Código";
+            case 1:
+                return "Entidade";
+            case 2:
+                return "Dt. Criação";
+            default:
+                return "Valor Total";
         }
     }
 

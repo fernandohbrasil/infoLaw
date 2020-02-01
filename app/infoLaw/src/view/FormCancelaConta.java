@@ -119,26 +119,25 @@ public class FormCancelaConta extends javax.swing.JFrame {
         rgReceber.setFont(new java.awt.Font("Serif", 0, 12)); // NOI18N
         rgReceber.setSelected(true);
         rgReceber.setText("Receber");
-        pnTipoConta.add(rgReceber, new org.netbeans.lib.awtextra.AbsoluteConstraints(5, 12, -1, -1));
+        pnTipoConta.add(rgReceber, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 15, -1, -1));
 
         rgbPAgRec.add(rgPagar);
         rgPagar.setFont(new java.awt.Font("Serif", 0, 12)); // NOI18N
         rgPagar.setText("Pagar");
-        pnTipoConta.add(rgPagar, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 12, -1, -1));
+        pnTipoConta.add(rgPagar, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 15, -1, -1));
 
-        getContentPane().add(pnTipoConta, new org.netbeans.lib.awtextra.AbsoluteConstraints(18, 475, 170, 40));
+        getContentPane().add(pnTipoConta, new org.netbeans.lib.awtextra.AbsoluteConstraints(18, 475, 170, 45));
 
         btnFecha.setFont(new java.awt.Font("Serif", 1, 12)); // NOI18N
         btnFecha.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/fechar.png"))); // NOI18N
         btnFecha.setText("Sair");
         btnFecha.setBorder(null);
         btnFecha.setHideActionText(true);
-        btnFecha.setHorizontalAlignment(javax.swing.SwingConstants.LEADING);
         btnFecha.setIconTextGap(10);
         btnFecha.setMaximumSize(new java.awt.Dimension(50, 30));
         btnFecha.setMinimumSize(new java.awt.Dimension(50, 30));
         btnFecha.setPreferredSize(new java.awt.Dimension(105, 30));
-        getContentPane().add(btnFecha, new org.netbeans.lib.awtextra.AbsoluteConstraints(739, 480, 120, 30));
+        getContentPane().add(btnFecha, new org.netbeans.lib.awtextra.AbsoluteConstraints(739, 480, 120, 35));
 
         btnCancelaParc.setFont(new java.awt.Font("Serif", 1, 12)); // NOI18N
         btnCancelaParc.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/confirmar.png"))); // NOI18N
@@ -146,12 +145,11 @@ public class FormCancelaConta extends javax.swing.JFrame {
         btnCancelaParc.setAlignmentY(0.7F);
         btnCancelaParc.setBorder(null);
         btnCancelaParc.setHideActionText(true);
-        btnCancelaParc.setHorizontalAlignment(javax.swing.SwingConstants.LEADING);
         btnCancelaParc.setIconTextGap(10);
         btnCancelaParc.setMaximumSize(new java.awt.Dimension(80, 30));
         btnCancelaParc.setMinimumSize(new java.awt.Dimension(80, 30));
         btnCancelaParc.setPreferredSize(new java.awt.Dimension(105, 30));
-        getContentPane().add(btnCancelaParc, new org.netbeans.lib.awtextra.AbsoluteConstraints(555, 480, 165, 30));
+        getContentPane().add(btnCancelaParc, new org.netbeans.lib.awtextra.AbsoluteConstraints(555, 480, 165, 35));
 
         btnCancelaContas.setFont(new java.awt.Font("Serif", 1, 12)); // NOI18N
         btnCancelaContas.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/confirmar.png"))); // NOI18N
@@ -159,12 +157,11 @@ public class FormCancelaConta extends javax.swing.JFrame {
         btnCancelaContas.setAlignmentY(0.7F);
         btnCancelaContas.setBorder(null);
         btnCancelaContas.setHideActionText(true);
-        btnCancelaContas.setHorizontalAlignment(javax.swing.SwingConstants.LEADING);
         btnCancelaContas.setIconTextGap(10);
         btnCancelaContas.setMaximumSize(new java.awt.Dimension(80, 30));
         btnCancelaContas.setMinimumSize(new java.awt.Dimension(80, 30));
         btnCancelaContas.setPreferredSize(new java.awt.Dimension(105, 30));
-        getContentPane().add(btnCancelaContas, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 480, 165, 30));
+        getContentPane().add(btnCancelaContas, new org.netbeans.lib.awtextra.AbsoluteConstraints(370, 480, 165, 35));
 
         pack();
         setLocationRelativeTo(null);

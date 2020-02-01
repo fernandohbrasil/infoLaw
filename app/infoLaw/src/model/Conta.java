@@ -8,7 +8,7 @@ public class Conta {
     private int id;
     private Entidade entidade;
     private Date dataCriacao;
-    private Double valorTotal;
+    private double valorTotal;
     private int status;
     private int usuarioid;
     private int usuarioidalteracao;
@@ -41,7 +41,7 @@ public class Conta {
         this.dataCriacao = dataCriacao;
     }
 
-    public Double getValorTotal() {
+    public double getValorTotal() {
         return valorTotal;
     }
     
@@ -49,7 +49,7 @@ public class Conta {
         return "R$ " + CurrencyUtil.getFormatCurrency(valorTotal);
     }
 
-    public void setValorTotal(Double valorTotal) {
+    public void setValorTotal(double valorTotal) {
         this.valorTotal = valorTotal;
     }
 

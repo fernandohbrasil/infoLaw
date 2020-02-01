@@ -85,14 +85,14 @@ public class FormDivideValores extends javax.swing.JFrame {
         rgReceber.setFont(new java.awt.Font("Serif", 0, 12)); // NOI18N
         rgReceber.setSelected(true);
         rgReceber.setText("Receber");
-        pnTipoConta.add(rgReceber, new org.netbeans.lib.awtextra.AbsoluteConstraints(5, 12, -1, -1));
+        pnTipoConta.add(rgReceber, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 15, -1, -1));
 
         rgbPAgRec.add(rgPagar);
         rgPagar.setFont(new java.awt.Font("Serif", 0, 12)); // NOI18N
         rgPagar.setText("Pagar");
-        pnTipoConta.add(rgPagar, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 12, -1, -1));
+        pnTipoConta.add(rgPagar, new org.netbeans.lib.awtextra.AbsoluteConstraints(90, 15, -1, -1));
 
-        getContentPane().add(pnTipoConta, new org.netbeans.lib.awtextra.AbsoluteConstraints(18, 350, 170, 40));
+        getContentPane().add(pnTipoConta, new org.netbeans.lib.awtextra.AbsoluteConstraints(18, 350, 170, 45));
 
         btnDivide.setFont(new java.awt.Font("Serif", 1, 12)); // NOI18N
         btnDivide.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/confirmar.png"))); // NOI18N
@@ -100,24 +100,22 @@ public class FormDivideValores extends javax.swing.JFrame {
         btnDivide.setAlignmentY(0.7F);
         btnDivide.setBorder(null);
         btnDivide.setHideActionText(true);
-        btnDivide.setHorizontalAlignment(javax.swing.SwingConstants.LEADING);
         btnDivide.setIconTextGap(10);
         btnDivide.setMaximumSize(new java.awt.Dimension(80, 30));
         btnDivide.setMinimumSize(new java.awt.Dimension(80, 30));
         btnDivide.setPreferredSize(new java.awt.Dimension(105, 30));
-        getContentPane().add(btnDivide, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 358, 140, 29));
+        getContentPane().add(btnDivide, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 355, 140, 35));
 
         btnFecha.setFont(new java.awt.Font("Serif", 1, 12)); // NOI18N
         btnFecha.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/fechar.png"))); // NOI18N
         btnFecha.setText("Sair");
         btnFecha.setBorder(null);
         btnFecha.setHideActionText(true);
-        btnFecha.setHorizontalAlignment(javax.swing.SwingConstants.LEADING);
         btnFecha.setIconTextGap(10);
         btnFecha.setMaximumSize(new java.awt.Dimension(50, 30));
         btnFecha.setMinimumSize(new java.awt.Dimension(50, 30));
         btnFecha.setPreferredSize(new java.awt.Dimension(105, 30));
-        getContentPane().add(btnFecha, new org.netbeans.lib.awtextra.AbsoluteConstraints(722, 358, 140, 29));
+        getContentPane().add(btnFecha, new org.netbeans.lib.awtextra.AbsoluteConstraints(722, 355, 140, 35));
 
         btnFiltrar.setFont(new java.awt.Font("Serif", 1, 12)); // NOI18N
         btnFiltrar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/confirmar.png"))); // NOI18N
@@ -125,12 +123,11 @@ public class FormDivideValores extends javax.swing.JFrame {
         btnFiltrar.setAlignmentY(0.7F);
         btnFiltrar.setBorder(null);
         btnFiltrar.setHideActionText(true);
-        btnFiltrar.setHorizontalAlignment(javax.swing.SwingConstants.LEADING);
         btnFiltrar.setIconTextGap(10);
         btnFiltrar.setMaximumSize(new java.awt.Dimension(80, 30));
         btnFiltrar.setMinimumSize(new java.awt.Dimension(80, 30));
         btnFiltrar.setPreferredSize(new java.awt.Dimension(105, 30));
-        getContentPane().add(btnFiltrar, new org.netbeans.lib.awtextra.AbsoluteConstraints(436, 358, 140, 29));
+        getContentPane().add(btnFiltrar, new org.netbeans.lib.awtextra.AbsoluteConstraints(436, 355, 140, 35));
 
         pack();
         setLocationRelativeTo(null);

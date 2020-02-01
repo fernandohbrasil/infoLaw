@@ -258,7 +258,7 @@
       </Properties>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-          <AbsoluteConstraints x="18" y="475" width="170" height="40"/>
+          <AbsoluteConstraints x="18" y="475" width="170" height="45"/>
         </Constraint>
       </Constraints>
 
@@ -282,7 +282,7 @@
           </AuxValues>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-              <AbsoluteConstraints x="5" y="12" width="-1" height="-1"/>
+              <AbsoluteConstraints x="10" y="15" width="-1" height="-1"/>
             </Constraint>
           </Constraints>
         </Component>
@@ -301,7 +301,7 @@
           </AuxValues>
           <Constraints>
             <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-              <AbsoluteConstraints x="90" y="12" width="-1" height="-1"/>
+              <AbsoluteConstraints x="90" y="15" width="-1" height="-1"/>
             </Constraint>
           </Constraints>
         </Component>
@@ -320,7 +320,6 @@
           <Border info="null"/>
         </Property>
         <Property name="hideActionText" type="boolean" value="true"/>
-        <Property name="horizontalAlignment" type="int" value="10"/>
         <Property name="iconTextGap" type="int" value="10"/>
         <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
           <Dimension value="[50, 30]"/>
@@ -337,7 +336,7 @@
       </AuxValues>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-          <AbsoluteConstraints x="739" y="480" width="120" height="30"/>
+          <AbsoluteConstraints x="739" y="480" width="120" height="35"/>
         </Constraint>
       </Constraints>
     </Component>
@@ -355,7 +354,6 @@
           <Border info="null"/>
         </Property>
         <Property name="hideActionText" type="boolean" value="true"/>
-        <Property name="horizontalAlignment" type="int" value="10"/>
         <Property name="iconTextGap" type="int" value="10"/>
         <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
           <Dimension value="[80, 30]"/>
@@ -372,7 +370,7 @@
       </AuxValues>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-          <AbsoluteConstraints x="555" y="480" width="165" height="30"/>
+          <AbsoluteConstraints x="555" y="480" width="165" height="35"/>
         </Constraint>
       </Constraints>
     </Component>
@@ -390,7 +388,6 @@
           <Border info="null"/>
         </Property>
         <Property name="hideActionText" type="boolean" value="true"/>
-        <Property name="horizontalAlignment" type="int" value="10"/>
         <Property name="iconTextGap" type="int" value="10"/>
         <Property name="maximumSize" type="java.awt.Dimension" editor="org.netbeans.beaninfo.editors.DimensionEditor">
           <Dimension value="[80, 30]"/>
@@ -407,7 +404,7 @@
       </AuxValues>
       <Constraints>
         <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-          <AbsoluteConstraints x="370" y="480" width="165" height="30"/>
+          <AbsoluteConstraints x="370" y="480" width="165" height="35"/>
         </Constraint>
       </Constraints>
     </Component>

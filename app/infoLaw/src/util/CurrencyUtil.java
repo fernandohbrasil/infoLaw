@@ -13,7 +13,7 @@ public class CurrencyUtil {
         return Double.valueOf(value);
     }    
     
-    public static Double getValorFromEdit(String editValue) {
+    public static double getValorFromEdit(String editValue) {
         try {
             return Double.parseDouble(editValue);
         } catch (NumberFormatException exception) {

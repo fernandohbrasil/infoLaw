@@ -41,11 +41,11 @@ public class UsuarioDao {
     }
 
     public boolean update(String username, int senha) {
-        try {            
+        try {
             conexao = Conexao.getConnection();
             stmt = conexao.prepareStatement("update usuario set "
                     + "senha = ?,"
-                    + "username = ?"                    
+                    + "username = ?"
                     + "where "
                     + "id = ?");
 
@@ -54,7 +54,7 @@ public class UsuarioDao {
             stmt.setInt(3, Usuario.getInstance().getId());
             stmt.execute();
 
-            autentica(username, senha);            
+            autentica(username, senha);
             return true;
         } catch (SQLException e) {
             System.out.println(stmt.toString());

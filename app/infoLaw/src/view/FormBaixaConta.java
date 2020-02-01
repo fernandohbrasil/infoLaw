@@ -44,10 +44,16 @@ public class FormBaixaConta extends javax.swing.JFrame {
         rgReceber = new javax.swing.JRadioButton();
         rgPagar = new javax.swing.JRadioButton();
         btnPagar = new javax.swing.JButton();
+        pnPagParcial = new javax.swing.JPanel();
+        btnPagParcial = new javax.swing.JButton();
+        edtValorParcial = new javax.swing.JTextField();
+        lblPagPArcial = new javax.swing.JLabel();
+        lblNovaData = new javax.swing.JLabel();
+        edtNovaData = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(745, 442));
-        setPreferredSize(new java.awt.Dimension(850, 635));
+        setPreferredSize(new java.awt.Dimension(840, 625));
         setResizable(false);
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -184,12 +190,11 @@ public class FormBaixaConta extends javax.swing.JFrame {
         btnFecha.setText("Sair");
         btnFecha.setBorder(null);
         btnFecha.setHideActionText(true);
-        btnFecha.setHorizontalAlignment(javax.swing.SwingConstants.LEADING);
         btnFecha.setIconTextGap(10);
         btnFecha.setMaximumSize(new java.awt.Dimension(50, 30));
         btnFecha.setMinimumSize(new java.awt.Dimension(50, 30));
         btnFecha.setPreferredSize(new java.awt.Dimension(105, 30));
-        getContentPane().add(btnFecha, new org.netbeans.lib.awtextra.AbsoluteConstraints(720, 70, 105, 30));
+        getContentPane().add(btnFecha, new org.netbeans.lib.awtextra.AbsoluteConstraints(720, 72, 105, 30));
 
         pnTipoConta.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)), "Tipo de Conta", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Serif", 0, 12))); // NOI18N
         pnTipoConta.setPreferredSize(new java.awt.Dimension(105, 70));
@@ -214,12 +219,49 @@ public class FormBaixaConta extends javax.swing.JFrame {
         btnPagar.setAlignmentY(0.7F);
         btnPagar.setBorder(null);
         btnPagar.setHideActionText(true);
-        btnPagar.setHorizontalAlignment(javax.swing.SwingConstants.LEADING);
         btnPagar.setIconTextGap(10);
         btnPagar.setMaximumSize(new java.awt.Dimension(80, 30));
         btnPagar.setMinimumSize(new java.awt.Dimension(80, 30));
         btnPagar.setPreferredSize(new java.awt.Dimension(105, 30));
         getContentPane().add(btnPagar, new org.netbeans.lib.awtextra.AbsoluteConstraints(720, 43, 105, 30));
+
+        pnPagParcial.setBorder(javax.swing.BorderFactory.createTitledBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)), "Pag. Parcial", javax.swing.border.TitledBorder.DEFAULT_JUSTIFICATION, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Serif", 0, 12))); // NOI18N
+        pnPagParcial.setPreferredSize(new java.awt.Dimension(105, 70));
+        pnPagParcial.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        btnPagParcial.setFont(new java.awt.Font("Serif", 1, 12)); // NOI18N
+        btnPagParcial.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/confirmar.png"))); // NOI18N
+        btnPagParcial.setText("Pagar");
+        btnPagParcial.setAlignmentY(0.7F);
+        btnPagParcial.setBorder(null);
+        btnPagParcial.setHideActionText(true);
+        btnPagParcial.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        btnPagParcial.setIconTextGap(10);
+        btnPagParcial.setMaximumSize(new java.awt.Dimension(80, 30));
+        btnPagParcial.setMinimumSize(new java.awt.Dimension(80, 30));
+        btnPagParcial.setPreferredSize(new java.awt.Dimension(105, 30));
+        btnPagParcial.setVerifyInputWhenFocusTarget(false);
+        pnPagParcial.add(btnPagParcial, new org.netbeans.lib.awtextra.AbsoluteConstraints(5, 105, 95, -1));
+
+        edtValorParcial.setToolTipText("Ex: 50,20");
+        pnPagParcial.add(edtValorParcial, new org.netbeans.lib.awtextra.AbsoluteConstraints(5, 80, 95, 25));
+
+        lblPagPArcial.setFont(new java.awt.Font("Serif", 1, 12)); // NOI18N
+        lblPagPArcial.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblPagPArcial.setText("Valor Pago");
+        lblPagPArcial.setVerifyInputWhenFocusTarget(false);
+        pnPagParcial.add(lblPagPArcial, new org.netbeans.lib.awtextra.AbsoluteConstraints(5, 65, 95, -1));
+
+        lblNovaData.setFont(new java.awt.Font("Serif", 1, 12)); // NOI18N
+        lblNovaData.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        lblNovaData.setText("Nova Data");
+        lblNovaData.setVerifyInputWhenFocusTarget(false);
+        pnPagParcial.add(lblNovaData, new org.netbeans.lib.awtextra.AbsoluteConstraints(5, 20, 95, -1));
+
+        edtNovaData.setToolTipText("Ex: 50,20");
+        pnPagParcial.add(edtNovaData, new org.netbeans.lib.awtextra.AbsoluteConstraints(5, 35, 95, 25));
+
+        getContentPane().add(pnPagParcial, new org.netbeans.lib.awtextra.AbsoluteConstraints(720, 370, -1, 140));
 
         pack();
         setLocationRelativeTo(null);
@@ -230,6 +272,7 @@ public class FormBaixaConta extends javax.swing.JFrame {
     public javax.swing.JButton btnConsCli;
     public javax.swing.JButton btnFecha;
     public javax.swing.JButton btnFiltrar;
+    public javax.swing.JButton btnPagParcial;
     public javax.swing.JButton btnPagar;
     public javax.swing.JCheckBox cbData;
     public javax.swing.JCheckBox cbEntidade;
@@ -237,10 +280,14 @@ public class FormBaixaConta extends javax.swing.JFrame {
     public javax.swing.JTextField edtCliente;
     public javax.swing.JTextField edtDtFin;
     public javax.swing.JTextField edtDtIni;
+    public javax.swing.JTextField edtNovaData;
+    public javax.swing.JTextField edtValorParcial;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JLabel lblNome1;
+    private javax.swing.JLabel lblNovaData;
+    private javax.swing.JLabel lblPagPArcial;
     public javax.swing.JLabel lblQtdParc;
     public javax.swing.JLabel lblResultado;
     private javax.swing.JLabel lblTelefone3;
@@ -248,6 +295,7 @@ public class FormBaixaConta extends javax.swing.JFrame {
     private javax.swing.JLabel lblTitulo;
     private javax.swing.JPanel pnCliente;
     private javax.swing.JPanel pnData;
+    private javax.swing.JPanel pnPagParcial;
     public javax.swing.JPanel pnPrincipal;
     private javax.swing.JPanel pnTipoConta;
     public javax.swing.JRadioButton rgDtPag;

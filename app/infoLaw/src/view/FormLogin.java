@@ -20,12 +20,12 @@ public class FormLogin extends javax.swing.JFrame {
         lblTitulo = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-        setMinimumSize(new java.awt.Dimension(0, 0));
         setPreferredSize(new java.awt.Dimension(280, 280));
         setSize(new java.awt.Dimension(290, 270));
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         pnlLogin.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true));
+        pnlLogin.setPreferredSize(new java.awt.Dimension(250, 190));
         pnlLogin.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         edtUsuario.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
@@ -43,14 +43,29 @@ public class FormLogin extends javax.swing.JFrame {
         pnlLogin.add(edtSenha, new org.netbeans.lib.awtextra.AbsoluteConstraints(94, 84, 131, -1));
 
         btnAcessar.setFont(new java.awt.Font("Serif", 1, 12)); // NOI18N
+        btnAcessar.setForeground(new java.awt.Color(30, 30, 30));
         btnAcessar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/confirmar.png"))); // NOI18N
         btnAcessar.setText("Acessar");
-        pnlLogin.add(btnAcessar, new org.netbeans.lib.awtextra.AbsoluteConstraints(32, 136, -1, -1));
+        btnAcessar.setAlignmentY(0.0F);
+        btnAcessar.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        btnAcessar.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        btnAcessar.setIconTextGap(2);
+        btnAcessar.setMaximumSize(null);
+        btnAcessar.setMinimumSize(null);
+        btnAcessar.setPreferredSize(new java.awt.Dimension(110, 35));
+        pnlLogin.add(btnAcessar, new org.netbeans.lib.awtextra.AbsoluteConstraints(5, 135, 120, 35));
 
         btnCancelar.setFont(new java.awt.Font("Serif", 1, 12)); // NOI18N
+        btnCancelar.setForeground(new java.awt.Color(30, 30, 30));
         btnCancelar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/cancelar.png"))); // NOI18N
         btnCancelar.setText("Cancelar");
-        pnlLogin.add(btnCancelar, new org.netbeans.lib.awtextra.AbsoluteConstraints(127, 136, -1, -1));
+        btnCancelar.setAlignmentY(0.0F);
+        btnCancelar.setHorizontalAlignment(javax.swing.SwingConstants.LEFT);
+        btnCancelar.setIconTextGap(2);
+        btnCancelar.setMaximumSize(null);
+        btnCancelar.setMinimumSize(null);
+        btnCancelar.setPreferredSize(new java.awt.Dimension(120, 35));
+        pnlLogin.add(btnCancelar, new org.netbeans.lib.awtextra.AbsoluteConstraints(125, 135, 120, 35));
 
         getContentPane().add(pnlLogin, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 50, 250, 190));
 

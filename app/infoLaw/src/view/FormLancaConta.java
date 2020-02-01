@@ -42,8 +42,9 @@ public class FormLancaConta extends javax.swing.JFrame {
         rgPagar = new javax.swing.JRadioButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setMinimumSize(new java.awt.Dimension(745, 442));
+        setMinimumSize(new java.awt.Dimension(775, 655));
         setPreferredSize(new java.awt.Dimension(775, 655));
+        setSize(new java.awt.Dimension(775, 655));
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         pnPrincipal.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));

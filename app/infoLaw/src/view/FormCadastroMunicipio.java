@@ -26,7 +26,9 @@ public class FormCadastroMunicipio extends javax.swing.JFrame {
         btnExclui = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
+        setMinimumSize(new java.awt.Dimension(600, 220));
         setPreferredSize(new java.awt.Dimension(600, 220));
+        setSize(new java.awt.Dimension(600, 220));
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         lblTitulo.setFont(new java.awt.Font("Tahoma", 1, 16)); // NOI18N

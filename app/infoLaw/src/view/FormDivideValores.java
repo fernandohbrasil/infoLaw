@@ -29,9 +29,10 @@ public class FormDivideValores extends javax.swing.JFrame {
         btnFiltrar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setMinimumSize(new java.awt.Dimension(5, 5));
+        setMinimumSize(new java.awt.Dimension(880, 430));
         setPreferredSize(new java.awt.Dimension(880, 430));
         setResizable(false);
+        setSize(new java.awt.Dimension(880, 430));
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         pnPrincipal.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));

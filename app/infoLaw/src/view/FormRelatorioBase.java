@@ -49,6 +49,7 @@ public class FormRelatorioBase extends javax.swing.JFrame {
         btnImprimir = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
+        setMinimumSize(new java.awt.Dimension(730, 340));
         setPreferredSize(new java.awt.Dimension(730, 340));
         setSize(new java.awt.Dimension(730, 340));
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());

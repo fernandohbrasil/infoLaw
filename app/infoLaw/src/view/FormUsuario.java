@@ -26,9 +26,9 @@ public class FormUsuario extends javax.swing.JFrame {
         btnReload = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setMinimumSize(new java.awt.Dimension(600, 180));
+        setMinimumSize(new java.awt.Dimension(575, 210));
         setPreferredSize(new java.awt.Dimension(575, 210));
-        setSize(new java.awt.Dimension(570, 210));
+        setSize(new java.awt.Dimension(575, 210));
         getContentPane().setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         pnPrincipal.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 0, 0)));
